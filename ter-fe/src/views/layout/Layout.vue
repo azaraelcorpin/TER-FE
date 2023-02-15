@@ -100,7 +100,7 @@
       app
       padless
       inset
-      style="height:60px;"
+      style="height:20px;"
     >
       <v-card 
         flat
