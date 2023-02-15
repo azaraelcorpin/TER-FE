@@ -11,7 +11,7 @@
           offset-y
         >
           <template v-slot:activator="{ on }">
-            <div style="color:white; margin-top:10px;margin-right:10px;">{{globalStore.userName}}</div>
+            <!-- <div style="color:white; margin-top:10px;margin-right:10px;">{{globalStore.userName}}</div> -->
             <v-btn
               icon
               x-large
@@ -53,14 +53,14 @@
                   {{ globalStore.userEmail }}
                 </p>
                 <v-divider class="my-3"></v-divider>
-                <v-btn
+                <!-- <v-btn
                   depressed
                   rounded
                   text
                 >
                   Edit Account
                 </v-btn>
-                <v-divider class="my-3"></v-divider>
+                <v-divider class="my-3"></v-divider> -->
                 <v-btn
                   depressed
                   rounded

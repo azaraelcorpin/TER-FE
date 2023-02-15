@@ -2,7 +2,7 @@
      <div class="v-application--wrap">
       <v-app-bar color="#808080" app>
         <v-app-bar-nav-icon style="color:aliceblue" @click="drawer = !drawer"></v-app-bar-nav-icon>
-        <v-app-bar-title style="color:aliceblue">Leave Management</v-app-bar-title>
+        <div style="color:aliceblue;">Teacher Efficiency Rating Portal</div>
         <v-spacer />
         <div>
         <!-- <v-btn icon large text id="profileAvatar-id">
@@ -33,8 +33,8 @@
             <!-- <v-list-item-title class="text-h4"> I-C-T-O </v-list-item-title>
             <v-list-item-subtitle> Powered By</v-list-item-subtitle> -->
             <div class="logo-holder logo">
-              <h3>ICTO</h3>
-              <p>Information & Communication Technology Office</p>
+              <h3>MSU GSC</h3>
+              <p>High School Department</p>
             </div>
           </v-list-item-content>
         </v-list-item>
@@ -96,7 +96,7 @@
       </transition>
     </v-main>
 
-    <v-footer 
+    <!-- <v-footer 
       app
       padless
       inset
@@ -111,12 +111,12 @@
         style="height:60px;"
       >
         <v-card-text class="white--text" style="margin-top: -10px;">
-          <!-- <v-icon color="white">mdi-cog </v-icon> -->
-          <strong>Mindanao State Uniersity-Gensan</strong>
+          <v-icon color="white">mdi-cog </v-icon>
+          <strong>Mindanao State University-Gensan</strong>
           <div>Information Communication and Technology Office </div>
         </v-card-text>
       </v-card>
-    </v-footer>
+    </v-footer> -->
      </div>
   </template>
   
@@ -149,9 +149,9 @@ import ProfileAvatar from '@/components/ProfileAvatar.vue'
   <style scoped>
   @import url('https://fonts.googleapis.com/css?family=Bangers|Cinzel:400,700,900|Lato:100,300,400,700,900|Lobster|Lora:400,700|Mansalva|Muli:200,300,400,600,700,800,900|Open+Sans:300,400,600,700,800|Oswald:200,300,400,500,600,700|Roboto:100,300,400,500,700,900&display=swap');
   .logo h3 {
-    color: #e74c3c;
+    color: #8b170a;
     font-family: 'Oswald', sans-serif;
-    font-weight: 300;
+    font-weight: 400;
     font-size: 50px;
     line-height:1.3;
 }

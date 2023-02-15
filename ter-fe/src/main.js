@@ -14,12 +14,6 @@ export const globalStore = new Vue({
     profilePicUrl: '',
     userName:'',
     userEmail:'',
-    empFullname:'Juan dela Cruz',
-    empID:'tmpID',
-    empPosition:'tmpDataPosition',
-    empOffice:'tmpDataOffice',
-    empDesignation:'tmpDataDesignation',
-    empSalary:'tmpDataSalary'
   }
 })
 
@@ -43,7 +37,7 @@ Vue.use(VueAxios, axios);
 
 */
 Vue.use(GAuth, {
-  clientId: process.env.VUE_APP_GOOGLE_OAUTH_CLIENT_ID, scope: 'email', prompt: 'consent', fetch_basic_profile: false,
+  clientId: process.env.VUE_APP_GOOGLE_OAUTH_CLIENT_ID, scope: 'email', prompt: 'consent', fetch_basic_profile: true,
   plugin_name:'Project Test'
 })
 

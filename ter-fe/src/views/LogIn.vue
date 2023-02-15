@@ -67,7 +67,7 @@
               
             console.log(response.data.photos[0].url);
             this.globalStore.profilePicUrl = (response.data.photos[0].url).split("=", 1)[0];  
-            this.globalStore.userName = currentUserProfile.getEmail().split("@",1)[0];
+            this.globalStore.userName = currentUserProfile.getName();
             this.globalStore.userEmail = currentUserProfile.getEmail();          
             if(!this.globalStore.userEmail.includes('@msugensan')){
               this.handleClickSignOut();
@@ -123,7 +123,7 @@
         try{            
             let currentUserProfile = that.$gAuth.GoogleAuth.currentUser.get().getBasicProfile();
             console.log('user',currentUserProfile.getEmail().split("@",1)[0]);
-            that.globalStore.userName = currentUserProfile.getEmail().split("@",1)[0];
+            that.globalStore.userName = currentUserProfile.getName();
             that.globalStore.userEmail = that.isSignIn?currentUserProfile.getEmail():'';
             
             //get ProfilePic url from google account
