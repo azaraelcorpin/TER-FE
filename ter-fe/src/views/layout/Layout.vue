@@ -96,7 +96,7 @@
       </transition>
     </v-main>
 
-    <!-- <v-footer 
+    <v-footer 
       app
       padless
       inset
@@ -116,7 +116,7 @@
           <div>Information Communication and Technology Office </div>
         </v-card-text>
       </v-card>
-    </v-footer> -->
+    </v-footer>
      </div>
   </template>
   
