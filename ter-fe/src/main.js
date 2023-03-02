@@ -14,6 +14,7 @@ export const globalStore = new Vue({
     profilePicUrl: '',
     userName:'',
     userEmail:'',
+    isAuthorized: false,
   }
 })
 
@@ -37,7 +38,7 @@ Vue.use(VueAxios, axios);
 
 */
 Vue.use(GAuth, {
-  clientId: process.env.VUE_APP_GOOGLE_OAUTH_CLIENT_ID, scope: 'email', prompt: 'consent', fetch_basic_profile: true,
+  clientId: process.env.VUE_APP_GOOGLE_OAUTH_CLIENT_ID, scope: 'email',response_type: 'code', prompt: 'consent', fetch_basic_profile: true,
   plugin_name:'Project Test'
 })
 

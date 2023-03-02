@@ -25,7 +25,7 @@ export default {
       return 'layout';
     },
     isSigned(){
-      return this.globalStore.userEmail!=='';
+      return this.globalStore.isAuthorized;
     }
   },
 

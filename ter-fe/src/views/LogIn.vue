@@ -58,6 +58,8 @@
       async handleClickSignIn(){
         try {
           const googleUser = await this.$gAuth.signIn()
+          console.log('googleUser', googleUser)
+          console.log("test",this.$gAuth)
           console.log('user', googleUser.getBasicProfile().getId())
           let currentUserProfile = googleUser.getBasicProfile();
 
@@ -113,18 +115,27 @@
       //   return "";
       // },
     },
-    mounted(){
+    async mounted(){
 
       let that = this
+      // const authCode = await this.$gAuth.getAuthCode()
+      // try{console.log('code',authCode)}catch(err){console.log('error',err)}
       let checkGauthLoad = setInterval(async function(){
         that.isInit = that.$gAuth.isInit
         that.isSignIn = that.$gAuth.isAuthorized
+        console.log("test",that.$gAuth)
+        console.log(
+            "getAuthResponse",
+            that.$gAuth.GoogleAuth.currentUser.get().getAuthResponse()
+          );
+        // console.log("test",that.$gAuth.GoogleAuth.currentUser.Oa.Bc.access_token)
         
         try{            
             let currentUserProfile = that.$gAuth.GoogleAuth.currentUser.get().getBasicProfile();
             console.log('user',currentUserProfile.getEmail().split("@",1)[0]);
             that.globalStore.userName = currentUserProfile.getName();
             that.globalStore.userEmail = that.isSignIn?currentUserProfile.getEmail():'';
+            that.globalStore.isAuthorized = that.$gAuth.isAuthorized;
             
             //get ProfilePic url from google account
             try{

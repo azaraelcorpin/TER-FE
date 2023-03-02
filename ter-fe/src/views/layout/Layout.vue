@@ -1,8 +1,8 @@
 <template>
      <div class="v-application--wrap">
-      <v-app-bar color="#808080" app>
+      <v-app-bar color="#20bfd2" app>
         <v-app-bar-nav-icon style="color:aliceblue" @click="drawer = !drawer"></v-app-bar-nav-icon>
-        <div style="color:aliceblue;">Teacher Efficiency Rating Portal</div>
+        <div style="color:black;">Teacher Efficiency Rating Portal</div>
         <v-spacer />
         <div>
         <!-- <v-btn icon large text id="profileAvatar-id">
@@ -43,7 +43,7 @@
             <div v-for="item in ConstRoutes" :key="item.path" link>
 
 
-                <v-list-item v-if="!item.children && item.visible" :to="item.path" ripple="ripple" class="white--text mp-nav-item" active-class="mp-nav-item__active">
+                <v-list-item v-if="!item.children && item.visible" :to="item.path" ripple="ripple" class="black--text mp-nav-item" active-class="mp-nav-item__active">
                     <v-list-item-icon class="layout-drawer__icon">
                         <v-icon>{{item.icon }}</v-icon>
                     </v-list-item-icon>
@@ -55,9 +55,9 @@
                     </v-list-item-content>
                 </v-list-item>
 
-                <v-list-group v-else-if="item.visible" class="white--text mp-nav-item" active-class="white--text mp-nav-item__active" :prepend-icon=item.icon>
+                <v-list-group v-else-if="item.visible" class="black--text mp-nav-item" active-class="black--text mp-nav-item__active" :prepend-icon=item.icon>
                   <template v-slot:activator>
-                    <v-list-item  :to="item.path" ripple="ripple" class="white--text mp-nav-item" active-class="mp-nav-item__active">
+                    <v-list-item  :to="item.path" ripple="ripple" class="black--text mp-nav-item" active-class="mp-nav-item__active">
                         <v-list-item-content>
                             <v-list-item-title>
                                 <span>{{item.meta.title}}</span>
@@ -67,7 +67,7 @@
                     </template>
                     
                     <div v-for="child in item.children" :key="child.path">
-                        <v-list-item style="margin-left:10px;" v-if="child.visible" :to="child.path" ripple="ripple" class="white--text mp-nav-item" active-class="mp-nav-item__active">
+                        <v-list-item style="margin-left:10px;" v-if="child.visible" :to="child.path" ripple="ripple" class="black--text mp-nav-item" active-class="mp-nav-item__active">
                             <v-list-item-icon class="layout-drawer__icon">
                                 <v-icon >{{child.icon }}</v-icon>
                             </v-list-item-icon>
@@ -96,7 +96,7 @@
       </transition>
     </v-main>
 
-    <v-footer 
+    <!-- <v-footer 
       app
       padless
       inset
@@ -116,7 +116,7 @@
           <div>Information Communication and Technology Office </div>
         </v-card-text>
       </v-card>
-    </v-footer>
+    </v-footer> -->
      </div>
   </template>
   
