@@ -1,5 +1,5 @@
 {
-  "name": "lcm-fe",
+  "name": "ter-fe",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -11,9 +11,12 @@
     "@mdi/font": "5.9.55",
     "axios": "^1.2.0",
     "core-js": "^3.8.3",
+    "crypto-js": "^4.1.1",
     "roboto-fontface": "*",
+    "sweetalert2": "^11.7.3",
     "vue": "^2.6.14",
     "vue-axios": "^3.5.2",
+    "vue-cookies-reactive": "^2.1.1",
     "vue-google-oauth2": "^1.5.8",
     "vue-router": "^3.5.1",
     "vuetify": "^2.6.0"
