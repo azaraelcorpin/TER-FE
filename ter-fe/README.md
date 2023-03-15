@@ -1,4 +1,4 @@
-# lcm-fe
+# ter-fe
 
 ## Project setup
 ```

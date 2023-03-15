@@ -21,11 +21,11 @@
                 color="brown"
                 size="48"
               >
-              <v-icon v-if="globalStore.profilePicUrl===''"  x-large class="white--text">
+              <v-icon v-if="$cookies.get('session').profilePicUrl===''"  x-large class="white--text">
                         mdi-account-circle
                     </v-icon>
                     <img v-else
-                    :src="globalStore.profilePicUrl"
+                    :src="$cookies.get('session').profilePicUrl"
                     referrerpolicy="no-referrer"
                     >
                 <!-- <span class="white--text text-h5">{{ user.initials }}</span> -->
@@ -39,18 +39,18 @@
                 <v-avatar
                   color="brown"
                 >
-                    <v-icon v-if="globalStore.profilePicUrl===''"  x-large class="white--text">
+                    <v-icon v-if="$cookies.get('session').profilePicUrl===''"  x-large class="white--text">
                         mdi-account-circle
                     </v-icon>
                     <img v-else
-                    :src="globalStore.profilePicUrl"
+                    :src="$cookies.get('session').profilePicUrl"
                     referrerpolicy="no-referrer"
                     >
                   <!-- <span class="white--text text-h5">{{ user.initials }}</span> -->
                 </v-avatar>
-                <h3>{{ globalStore.userName }}</h3>
+                <h3>{{ $cookies.get('session').userName }}</h3>
                 <p class="text-caption mt-1">
-                  {{ globalStore.userEmail }}
+                  {{ $cookies.get('session').userEmail }}
                 </p>
                 <v-divider class="my-3"></v-divider>
                 <!-- <v-btn
@@ -78,7 +78,6 @@
   </template>
 
 <script>
-import {globalStore} from '@/main.js'
 export default {
     name: 'ProfileAvatar',
   data: () => ({
@@ -87,16 +86,12 @@ export default {
       fullName: 'John Doe',
       email: 'john.doe@doe.com',
     },
-    globalStore,
   }),
   methods:{
     async handleClickSignOut(){
         try {
           await this.$gAuth.signOut()
-          this.isSignIn = this.$gAuth.isAuthorized
-          this.globalStore.profilePicUrl = ''
-          this.globalStore.userName = '';
-          this.globalStore.userEmail = ''; 
+          this.$cookies.remove('session');
         } catch (error) {
           // On fail do something
           console.error(error);

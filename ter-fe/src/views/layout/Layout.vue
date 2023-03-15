@@ -124,7 +124,7 @@
   import  {
     ConstRoutes
 } from '@/router';
-import {globalStore} from '@/main.js'
+import {globalStore,showErrorDialog} from '@/main.js'
 import ProfileAvatar from '@/components/ProfileAvatar.vue'
   export default {
     name: 'App',
@@ -140,8 +140,41 @@ import ProfileAvatar from '@/components/ProfileAvatar.vue'
     data: () => ({
       globalStore,
       drawer:true,
-      ConstRoutes,
+      ConstRoutes,showErrorDialog
     }),
+    mounted(){
+      //this.startInterval()
+      this.$cookies.refresh()
+    },
+    methods:{
+              
+        checkSession(){
+            this.$cookies.refresh()
+            if(!this.$cookies.get('session')){
+              this.showErrorDialog('Session','Session timed out')
+              throw new Error('Session Out');
+            }
+
+        },
+        startInterval(){
+              let intervalTime =  5 * 60 * 1000 // 5 minutes in milliseconds
+              let intervalId = setInterval(() => {
+                try {
+                 this.checkSession();
+                } catch (error) {
+                  console.error('Interval error:', error);
+                  clearInterval(intervalId); // Clear the interval
+                }
+              }, intervalTime);
+
+              // Set up interval to periodically clear and run the interval
+              let clearAndRunIntervalTime = 60 * 60 * 1000; // 1 hour in milliseconds
+              setInterval(() => {
+                clearInterval(intervalId); // Clear interval
+                intervalId = setInterval(this.checkSession(), intervalTime); // Set up interval again
+              }, clearAndRunIntervalTime)
+            }
+    }
   };
   </script>
 

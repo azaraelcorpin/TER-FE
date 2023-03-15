@@ -1,13 +1,11 @@
 <template>
-    <div style="background-color:aqua;display: flex;
-    align-items: center;
+    <div style="background-color:aqua;display: flex; align-items: center;
     justify-content: center;
     height: 100vh;">
-    {{globalStore.userEmail}}
-    <v-btn @click="handleClickSignIn"  v-if="!isSignIn" :disabled="!isInit"
-    > 
+    {{displaytext}}
+    <v-btn @click="handleClickSignIn" v-if="displaytext==''"> 
     <span>Sign In via Google</span></v-btn>
-    <v-btn @click="handleClickSignOut" v-if="isSignIn" :disabled="!isInit">signOout</v-btn>
+    <!-- <v-btn @click="handleClickSignOut" v-if="isSignIn" :disabled="!isInit">signOout</v-btn> -->
         <!-- <img :src="GoogleLogo" alt="Google Logo" /> -->
        
 
@@ -31,6 +29,8 @@
   // import GAuth from 'vue-google-oauth2'
   import Vue from 'vue';
   import {globalStore} from '@/main.js'
+  import API from "@/API/api.js"
+
   export default {
     name: 'LogIn',
     data () {
@@ -39,6 +39,7 @@
         isSignIn: false,
         info:"",
         globalStore,
+        displaytext:"",
       }
     },
   
@@ -57,30 +58,46 @@
   
       async handleClickSignIn(){
         try {
+          this.displaytext = "Checking Account....";
           const googleUser = await this.$gAuth.signIn()
           console.log('googleUser', googleUser)
           console.log("test",this.$gAuth)
-          console.log('user', googleUser.getBasicProfile().getId())
+          console.log('user', googleUser.getBasicProfile().getId())          
           let currentUserProfile = googleUser.getBasicProfile();
+          
 
             const response = await Vue.axios.get('https://people.googleapis.com/v1/people/'+currentUserProfile.getId()
               +'?personFields=photos&key='+process.env.VUE_APP_GOOGLE_API_KEY);
 
-              
             console.log(response.data.photos[0].url);
             this.globalStore.profilePicUrl = (response.data.photos[0].url).split("=", 1)[0];  
             this.globalStore.userName = currentUserProfile.getName();
-            this.globalStore.userEmail = currentUserProfile.getEmail();          
+            // this.globalStore.userEmail = currentUserProfile.getEmail();  
+            this.globalStore.userEmail = 'esmaida.andang@msugensan.edu.ph';          
             if(!this.globalStore.userEmail.includes('@msugensan')){
               this.handleClickSignOut();
               alert('Invalid email account');
               return;
             }
-            /// Code to query from DB userData Employee{fullname,ID,Position,Office,Designation,Salary}
+            try {
+                  let response = await API.checkAccount();
+                  console.log("response: ", response.user);
+                  if (response.error) {
+                      console.log(response);
+                  } else {
+                    response.user.expiration = new Date().getTime() + 60 * 60 * 1000;// if no request to Backend within 1 hour... session log out.. 
+                    this.globalStore.user = response.user;
+                    response.user.profilePicUrl = this.globalStore.profilePicUrl;
+                    response.user.userName = this.globalStore.userName;
+                    this.$cookies.set('session',JSON.stringify(response.user),'1d');
+                    console.log('cook',this.$cookies.get('session'));
+                  }
+              } catch (error) {
+                  alert(error)
+                  console.log(error.message);
+              } 
             console.log(this.globalStore.profilePicUrl);
-          this.isSignIn = this.$gAuth.isAuthorized
-
-          this.$router.push({ name: 'Dashboard' })
+            this.isSignIn = this.$gAuth.isAuthorized
         } catch (error) {
           // On fail do something
           console.error(error);
@@ -116,45 +133,6 @@
       // },
     },
     async mounted(){
-
-      let that = this
-      // const authCode = await this.$gAuth.getAuthCode()
-      // try{console.log('code',authCode)}catch(err){console.log('error',err)}
-      let checkGauthLoad = setInterval(async function(){
-        that.isInit = that.$gAuth.isInit
-        that.isSignIn = that.$gAuth.isAuthorized
-        console.log("test",that.$gAuth)
-        console.log(
-            "getAuthResponse",
-            that.$gAuth.GoogleAuth.currentUser.get().getAuthResponse()
-          );
-        // console.log("test",that.$gAuth.GoogleAuth.currentUser.Oa.Bc.access_token)
-        
-        try{            
-            let currentUserProfile = that.$gAuth.GoogleAuth.currentUser.get().getBasicProfile();
-            console.log('user',currentUserProfile.getEmail().split("@",1)[0]);
-            that.globalStore.userName = currentUserProfile.getName();
-            that.globalStore.userEmail = that.isSignIn?currentUserProfile.getEmail():'';
-            that.globalStore.isAuthorized = that.$gAuth.isAuthorized;
-            
-            //get ProfilePic url from google account
-            try{
-                const response = await Vue.axios.get('https://people.googleapis.com/v1/people/'+currentUserProfile.getId()
-                  +'?personFields=photos&key='+process.env.VUE_APP_GOOGLE_API_KEY);            
-                that.globalStore.profilePicUrl = (response.data.photos[0].url).split("=", 1)[0];      
-            }
-            catch(error){
-              that.globalStore.profilePicUrl=''
-            }      
-
-            // let profileImage = this.getProfileImage(currentUserProfile.getId());
-            // console.log('profileImage',profileImage)
-        }
-        catch(error){
-          console.log(error);
-        }
-        if(that.isInit) clearInterval(checkGauthLoad)
-      }, 1000);
 
     }
     
