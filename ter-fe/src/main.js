@@ -10,43 +10,21 @@ import VueAxios from 'vue-axios';
 
 
 // global variable
-export const globalStore = new Vue({
-  data: {
-    profilePicUrl: '',
-    userName:'',
-    userEmail:'',
-    user:{},
-    messageDialog:{
-      title:'',
-      message:'',
-      show:false,
-      message_type:"mdi-information-outline",
-      color:'green' 
-    }
-  }
-})
-
-export function showInfoDialog (title,message){
-  this.globalStore.messageDialog.show=true;
-  this.globalStore.messageDialog.title=title;
-  this.globalStore.messageDialog.message=message;
-  this.globalStore.messageDialog.message_type='mdi-information-outline';
-  this.globalStore.messageDialog.color='blue';
-}
-export function showErrorDialog(title,message){
-  this.globalStore.messageDialog.show=true;
-  this.globalStore.messageDialog.title=title;
-  this.globalStore.messageDialog.message=message;
-  this.globalStore.messageDialog.message_type='mdi-close-circle-outline';
-  this.globalStore.messageDialog.color='red';
-}
-export function showSuccessDialog(title,message){
-  this.globalStore.messageDialog.show=true;
-  this.globalStore.messageDialog.title=title;
-  this.globalStore.messageDialog.message=message;
-  this.globalStore.messageDialog.message_type='mdi-checkbox-marked-circle-outline';
-  this.globalStore.messageDialog.color='green';
-}
+// export const globalStore = new Vue({
+//   data: {
+//     profilePicUrl: '',
+//     userName:'',
+//     userEmail:'',
+//     user:{},
+//     messageDialog:{
+//       title:'',
+//       message:'',
+//       show:false,
+//       message_type:"mdi-information-outline",
+//       color:'green' 
+//     }
+//   }
+// })
 
 
 Vue.config.productionTip = false

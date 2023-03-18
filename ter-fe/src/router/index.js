@@ -15,16 +15,16 @@ export const ConstRoutes = [
     icon: "mdi-view-dashboard",
     visible:true,
   },
-  {
-    path: '/leave',
-    name: 'leave',
-    component: () => import(/* webpackChunkName: "about" */ '../views/modules/Leave/LeaveApplications.vue'),
-    meta:{
-      title:"Leave Account",
-    },
-    icon: "mdi-account-box",
-    visible:true,
-  },
+  // {
+  //   path: '/leave',
+  //   name: 'leave',
+  //   component: () => import(/* webpackChunkName: "about" */ '../views/modules/Leave/LeaveApplications.vue'),
+  //   meta:{
+  //     title:"Leave Account",
+  //   },
+  //   icon: "mdi-account-box",
+  //   visible:true,
+  // },
   {
     path: '/admin',
     name: 'admin',
@@ -34,6 +34,7 @@ export const ConstRoutes = [
     },
     icon: "mdi-account-circle",
     visible:true,
+    roles:['AdminUser'],
     children: [
       {
         path: "/leavetransaction",
@@ -71,8 +72,9 @@ export const ConstRoutes = [
       {
         path: "/user",
         name: "user",
-        component: () => import(/* webpackChunkName: "about" */ '../components/DatePicker.vue'),
+        component: () => import(/* webpackChunkName: "about" */ '../views/modules/Admin/User.vue'),
         visible:true,
+        // roles:['admin'],// just delete or comment this code if the route is accessable to all
         meta: {
           title: "User",
           isChild:true,        
