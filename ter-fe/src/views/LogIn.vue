@@ -27,8 +27,9 @@
 * 
 */
 // import GAuth from 'vue-google-oauth2'
-import Vue from 'vue';
+// import Vue from 'vue';
 import API from "@/API/api.js"
+import Swal from 'sweetalert2'
 
 export default {
   name: 'LogIn',
@@ -57,21 +58,21 @@ export default {
     async handleClickSignIn(){
       try {
         this.displaytext = "Checking Account....";
-        const googleUser = await this.$gAuth.signIn()
-        console.log('googleUser', googleUser)
-        console.log("test",this.$gAuth)
-        console.log('user', googleUser.getBasicProfile().getId())          
-        let currentUserProfile = googleUser.getBasicProfile();
+        // const googleUser = await this.$gAuth.signIn()
+        // // console.log('googleUser', googleUser)
+        // // console.log("test",this.$gAuth)
+        // // console.log('user', googleUser.getBasicProfile().getId())          
+        // let currentUserProfile = googleUser.getBasicProfile();
         
 
-          const response = await Vue.axios.get('https://people.googleapis.com/v1/people/'+currentUserProfile.getId()
-            +'?personFields=photos&key='+process.env.VUE_APP_GOOGLE_API_KEY);
+        //   const response = await Vue.axios.get('https://people.googleapis.com/v1/people/'+currentUserProfile.getId()
+        //     +'?personFields=photos&key='+process.env.VUE_APP_GOOGLE_API_KEY);
 
-          console.log(response.data.photos[0].url);
-          let profilePicUrl = (response.data.photos[0].url).split("=", 1)[0];  
-          let userName = currentUserProfile.getName();
+        //   // console.log(response.data.photos[0].url);
+        //   let profilePicUrl = (response.data.photos[0].url).split("=", 1)[0];  
+        //   let userName = currentUserProfile.getName();
           // this.globalStore.userEmail = currentUserProfile.getEmail();  
-          let userEmail = 'azarael.corpin@msugensan.edu.ph';          
+          let userEmail = 'azelamaye.arbilo@msugensan.edu.ph';          
           if(!userEmail.includes('@msugensan')){
             this.handleClickSignOut();
             alert('Invalid email account');
@@ -79,18 +80,25 @@ export default {
           }
           try {
                 let response = await API.checkAccount(userEmail);
-                console.log("response: ", response.user);
                 if (response.error) {
                     console.log(response);
+                    this.handleClickSignOut();
+                    this.displaytext='';
+                    Swal.fire({
+                      icon: 'error',
+                      title: response.error.data.statusCode,
+                      text: response.error.data.message,
+                    })
                 } else {
-                  response.user.profilePicUrl = profilePicUrl;
-                  response.user.userName = userName;
+                  // response.user.profilePicUrl = profilePicUrl;
+                  // response.user.userName = userName;
                   this.$cookies.set('_SID_',JSON.stringify(response.user),'1d');
-                  console.log('cook',this.$cookies.get('_SID_'));
                 }
             } catch (error) {
                 alert(error)
-                console.log(error.message);
+                console.log(error.message);                
+                this.handleClickSignOut();
+                this.displaytext='';
             } 
           this.isSignIn = this.$gAuth.isAuthorized
       } catch (error) {
@@ -103,10 +111,6 @@ export default {
     async handleClickSignOut(){
       try {
         await this.$gAuth.signOut()
-        this.isSignIn = this.$gAuth.isAuthorized
-        this.globalStore.profilePicUrl = ''
-        this.globalStore.userName = '';
-        this.globalStore.userEmail = ''; 
       } catch (error) {
         // On fail do something
         console.error(error);

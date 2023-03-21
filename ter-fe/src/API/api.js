@@ -41,7 +41,6 @@ export default{
     const body = { }
     try {
       const response = await Vue.axios.post(url, body, config);
-      console.log(response);
       if (response && response.data && response.status == 200) {
         return response.data;
       } else if (response && response.data && response.data.message) {
@@ -51,7 +50,7 @@ export default{
       }
     } catch (error) {
       console.log(error);
-      return { error: error.message }
+      return { error: error.response }
     }
   },
 
@@ -62,7 +61,6 @@ export default{
     }
     try {
       const response = await Vue.axios.post(url, body, config);
-      console.log(response);
       if (response && response.data && response.status == 200) {
         return response.data;
       } else if (response && response.data && response.data.message) {
@@ -104,6 +102,88 @@ export default{
     const body = {
       email:userEmail
     }
+    let response = null
+    try {
+       response = await Vue.axios.post(url, body, config);
+      if (response && response.data && response.status == 200) {
+        return response.data;
+      } else if (response && response.data && response.data.message) {
+        return { error: response.data.message };
+      } else {
+        return { error: "Sorry. Error on checking account." };
+      }
+    } catch (error) {
+      console.log(error.response);
+      return { error: error.response }
+    }
+  },
+
+  async setPolicyAgreed() {
+    var url = `${process.env.VUE_APP_TER_API_URL}/PolicyAuth/setAuthorized`
+    const config =await this.getAuthorization();
+    const body = {   }
+    let response = null
+    try {
+       response = await Vue.axios.post(url, body, config);
+      if (response && response.data && response.status == 200) {
+        return response.data;
+      } else if (response && response.data && response.data.message) {
+        return { error: response.data.message };
+      } else {
+        return { error: "Sorry. Error on checking account." };
+      }
+    } catch (error) {
+      console.log(error.response);
+      return { error: error.response.data.message }
+    }
+  },
+
+  async getFacultyListByUser() {
+    var url = `${process.env.VUE_APP_TER_API_URL}/getFacultyList/byUser`
+    const config =await this.getAuthorization();
+    const body = {   }
+    let response = null
+    try {
+       response = await Vue.axios.post(url, body, config);
+      if (response && response.data && response.status == 200) {
+        return response.data;
+      } else if (response && response.data && response.data.message) {
+        return { error: response.data.message };
+      } else {
+        return { error: "Sorry. Error on checking account." };
+      }
+    } catch (error) {
+      console.log(error.response);
+      return { error: error.response }
+    }
+  },
+
+  async getCORByUser() {
+    var url = `${process.env.VUE_APP_TER_API_URL}/getCOR/byUser`
+    const config =await this.getAuthorization();
+    const body = {   }
+    let response = null
+    try {
+       response = await Vue.axios.post(url, body, config);
+      if (response && response.data && response.status == 200) {
+        return response.data;
+      } else if (response && response.data && response.data.message) {
+        return { error: response.data.message };
+      } else {
+        return { error: "Sorry. Error on checking account." };
+      }
+    } catch (error) {
+      console.log(error.response);
+      return { error: error.response }
+    }
+  },
+
+  async getQuationnaire() {
+    var url = `${process.env.VUE_APP_TER_API_URL}/questionnaire/getItemsTypeAndSy`
+    const config =await this.getAuthorization();
+    const body = {
+      "eval_type":"P"
+      }
     let response = null
     try {
        response = await Vue.axios.post(url, body, config);

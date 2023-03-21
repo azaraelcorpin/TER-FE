@@ -91,6 +91,16 @@
      mode="out-in"
    >      
      <keep-alive>
+          <v-dialog v-if="!$cookies.get('_SID_').policyAgreementId && !$cookies.get('_SID_').AdminUser && dialog" persistent style="background-color: aliceblue;" v-model="dialog" max-width="800px">
+            <div style="background-color: white;">
+              <student-notice v-if="$cookies.get('_SID_').eval_type ==='S'" style="margin-left: 20px;margin-right: 20px;"/>
+              <peer-notice v-if="$cookies.get('_SID_').eval_type ==='P'" style="margin-left: 20px;margin-right: 20px;"/>
+              <head-notice v-if="$cookies.get('_SID_').eval_type ==='H'" style="margin-left: 20px;margin-right: 20px;"/><br>
+              <span style="display: flex;justify-content: center;align-items: center;">
+              <v-btn @click="setPolicyAgreed" style="margin-right: 10px;margin-bottom: 10px;background-color: lightgreen;">AGREE</v-btn>
+              <v-btn @click="disagree" style="margin-left: 10px;margin-bottom: 10px;background-color: gray;">DISAGREE</v-btn></span>
+            </div>  
+          </v-dialog>
        <slot />
      </keep-alive>
    </transition>
@@ -125,10 +135,19 @@ import  {
  ConstRoutes
 } from '@/router';
 import ProfileAvatar from '@/components/ProfileAvatar.vue'
+import StudentNotice from '@/components/StudentNotice.vue';
+import PeerNotice from '@/components/PeerNotice.vue';
+import HeadNotice from '@/components/HeadNotice.vue';
+import API from '@/API/api';
+import Swal from 'sweetalert2';
+
 export default {
  name: 'App',
  components:{
    ProfileAvatar,
+   StudentNotice,
+   PeerNotice,
+   HeadNotice,
  },
  props:{
    routeList: {
@@ -139,6 +158,7 @@ export default {
  data: () => ({
    drawer:true,
    ConstRoutes,
+   dialog:true,
  }),
  mounted(){
    //this.startInterval()
@@ -146,12 +166,39 @@ export default {
  },
  methods:{
            
-     checkSession(){
-         this.$cookies.refresh()
-         if(!this.$cookies.get('_SID_')){
-           throw new Error('Session Out');
-         }
-
+     async setPolicyAgreed(){
+      try {
+                let response = await API.setPolicyAgreed();
+                if (response.error) {
+                    console.log(response);
+                    this.handleClickSignOut();
+                    this.displaytext='';
+                    Swal.fire({
+                      icon: 'error',
+                      title: response.error.data.statusCode,
+                      text: response.error.data.message,
+                    })
+                } else {
+                  let user_data = this.$cookies.get('_SID_');
+                  user_data.policyAgreementId = response.policyAgreementId;
+                  this.$cookies.set('_SID_',JSON.stringify(user_data),'1d');
+                  this.$cookies.refresh();
+                  this.dialog = false;
+                }
+            } catch (error) {
+                alert(error)
+                console.log(error.message);                
+                this.handleClickSignOut();
+            } 
+     },
+    async disagree(){
+        try {
+          await this.$gAuth.signOut()
+          this.$cookies.remove('_SID_');
+        } catch (error) {
+          // On fail do something
+          console.error(error);
+        }
      },
      hasAuth(rolesList){
            if(!rolesList)
