@@ -7,6 +7,7 @@ import '@mdi/font/css/materialdesignicons.css'
 import GAuth from 'vue-google-oauth2'
 import axios from 'axios';
 import VueAxios from 'vue-axios';
+import VueMeta from 'vue-meta'
 
 
 // global variable
@@ -27,9 +28,11 @@ import VueAxios from 'vue-axios';
 // })
 
 
+
+
 Vue.config.productionTip = false
 Vue.use(VueAxios, axios);
-
+Vue.use(VueMeta)
 /*
 // const gauthOption = {
 //   redirect_uri: "http://localhost:3000",
