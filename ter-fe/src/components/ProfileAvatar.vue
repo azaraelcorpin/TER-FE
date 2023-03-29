@@ -92,6 +92,7 @@ methods:{
       try {
         await this.$gAuth.signOut()
         this.$cookies.remove('_SID_');
+        localStorage.removeItem('routeParams');
       } catch (error) {
         // On fail do something
         console.error(error);

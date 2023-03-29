@@ -27,7 +27,7 @@
 * 
 */
 // import GAuth from 'vue-google-oauth2'
-// import Vue from 'vue';
+import Vue from 'vue';
 import API from "@/API/api.js"
 import Swal from 'sweetalert2'
 
@@ -58,21 +58,21 @@ export default {
     async handleClickSignIn(){
       try {
         this.displaytext = "Checking Account....";
-        // const googleUser = await this.$gAuth.signIn()
+        const googleUser = await this.$gAuth.signIn()
         // // console.log('googleUser', googleUser)
         // // console.log("test",this.$gAuth)
         // // console.log('user', googleUser.getBasicProfile().getId())          
-        // let currentUserProfile = googleUser.getBasicProfile();
+        let currentUserProfile = googleUser.getBasicProfile();
         
 
-        //   const response = await Vue.axios.get('https://people.googleapis.com/v1/people/'+currentUserProfile.getId()
-        //     +'?personFields=photos&key='+process.env.VUE_APP_GOOGLE_API_KEY);
+          const response = await Vue.axios.get('https://people.googleapis.com/v1/people/'+currentUserProfile.getId()
+            +'?personFields=photos&key='+process.env.VUE_APP_GOOGLE_API_KEY);
 
         //   // console.log(response.data.photos[0].url);
-        //   let profilePicUrl = (response.data.photos[0].url).split("=", 1)[0];  
-        //   let userName = currentUserProfile.getName();
+          let profilePicUrl = (response.data.photos[0].url).split("=", 1)[0];  
+          let userName = currentUserProfile.getName();
           // this.globalStore.userEmail = currentUserProfile.getEmail();  
-          let userEmail = 'azelamaye.arbilo@msugensan.edu.ph';          
+          let userEmail = currentUserProfile.getEmail(); //'azelamaye.arbilo@msugensan.edu.ph'; sample email
           if(!userEmail.includes('@msugensan')){
             this.handleClickSignOut();
             alert('Invalid email account');
@@ -90,8 +90,8 @@ export default {
                       text: response.error.data.message,
                     })
                 } else {
-                  // response.user.profilePicUrl = profilePicUrl;
-                  // response.user.userName = userName;
+                  response.user.profilePicUrl = profilePicUrl;
+                  response.user.userName = userName;
                   this.$cookies.set('_SID_',JSON.stringify(response.user),'1d');
                 }
             } catch (error) {
@@ -111,6 +111,7 @@ export default {
     async handleClickSignOut(){
       try {
         await this.$gAuth.signOut()
+        this.displaytext='';
       } catch (error) {
         // On fail do something
         console.error(error);

@@ -43,7 +43,7 @@
          <div v-for="item in ConstRoutes" :key="item.path" link>
 
 
-             <v-list-item v-if="!item.children && item.visible && hasAuth(item.roles)" :to="item.path" ripple="ripple" class="black--text mp-nav-item" active-class="mp-nav-item__active">
+             <v-list-item v-if="!item.children && item.visible && hasAuth(item.meta.roles)" :to="item.path" ripple="ripple" class="black--text mp-nav-item" active-class="mp-nav-item__active">
                  <v-list-item-icon class="layout-drawer__icon">
                      <v-icon>{{item.icon }}</v-icon>
                  </v-list-item-icon>
@@ -55,7 +55,7 @@
                  </v-list-item-content>
              </v-list-item>
 
-             <v-list-group v-else-if="item.visible && hasAuth(item.roles)" class="black--text mp-nav-item" active-class="black--text mp-nav-item__active" :prepend-icon=item.icon>
+             <v-list-group v-else-if="item.visible && hasAuth(item.meta.roles)" class="black--text mp-nav-item" active-class="black--text mp-nav-item__active" :prepend-icon=item.icon>
                <template v-slot:activator>
                  <v-list-item  :to="item.path" ripple="ripple" class="black--text mp-nav-item" active-class="mp-nav-item__active">
                      <v-list-item-content>
@@ -67,7 +67,7 @@
                  </template>
                  
                  <div v-for="child in item.children" :key="child.path">
-                     <v-list-item style="margin-left:10px;" v-if="child.visible && hasAuth(item.roles) " :to="child.path" ripple="ripple" class="black--text mp-nav-item" active-class="mp-nav-item__active">
+                     <v-list-item style="margin-left:10px;" v-if="child.visible && hasAuth(item.meta.roles) " :to="child.path" ripple="ripple" class="black--text mp-nav-item" active-class="mp-nav-item__active">
                          <v-list-item-icon class="layout-drawer__icon">
                              <v-icon >{{child.icon }}</v-icon>
                          </v-list-item-icon>

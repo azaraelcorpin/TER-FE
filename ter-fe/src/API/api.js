@@ -11,6 +11,7 @@ export default{
    if(!_data){
     if(!Vue.$cookies.get('_SID_')){
           Vue.$cookies.remove('_SID_');
+          localStorage.removeItem('routeParams');
           Swal.fire(
             'The Session Timed Out?',
             'Please log in again',
@@ -178,11 +179,11 @@ export default{
     }
   },
 
-  async getQuationnaire() {
+  async getMyQuestionnaires() {
     var url = `${process.env.VUE_APP_TER_API_URL}/questionnaire/getItemsTypeAndSy`
     const config =await this.getAuthorization();
     const body = {
-      "eval_type":"P"
+      "eval_type":Vue.$cookies.get('_SID_').eval_type
       }
     let response = null
     try {
@@ -199,4 +200,83 @@ export default{
       return { error: error.response }
     }
   },
+
+  async saveEval(_eval) {
+    var url = `${process.env.VUE_APP_TER_API_URL}/evaluation/save`
+    const config =await this.getAuthorization();
+    const body = _eval;
+    let response = null
+    try {
+       response = await Vue.axios.post(url, body, config);
+      if (response && response.data && response.status == 200) {
+        return response.data;
+      } else if (response && response.data && response.data.message) {
+        return { error: response.data.message };
+      } else {
+        return { error: "Sorry. Error on checking account." };
+      }
+    } catch (error) {
+      console.log(error.response);
+      return { error: error.response.data.message }
+    }
+  },
+
+  async getTerSchedAll() {
+    var url = `${process.env.VUE_APP_TER_API_URL}/TerSched/all`
+    const config =await this.getAuthorization();
+    const body = {
+    }
+    try {
+      const response = await Vue.axios.post(url, body, config);
+      if (response && response.data && response.status == 200) {
+        return response.data;
+      } else if (response && response.data && response.data.message) {
+        return { error: response.data.message };
+      } else {
+        return { error: "Sorry. Error on checking account." };
+      }
+    } catch (error) {
+      console.log(error);
+      return { error: error.message }
+    }
+  },
+
+  async setOpen(item) {
+    var url = `${process.env.VUE_APP_TER_API_URL}/TerSched/setOpen`
+    const config =await this.getAuthorization();
+    const body = item
+    try {
+      const response = await Vue.axios.post(url, body, config);
+      if (response && response.data && response.status == 200) {
+        return response.data;
+      } else if (response && response.data && response.data.message) {
+        return { error: response.data.message };
+      } else {
+        return { error: "Sorry. Error on checking account." };
+      }
+    } catch (error) {
+      console.log(error);
+      return { error: error.message }
+    }
+  },
+
+  async setClose(item) {
+    var url = `${process.env.VUE_APP_TER_API_URL}/TerSched/setClosed`
+    const config =await this.getAuthorization();
+    const body = item
+    try {
+      const response = await Vue.axios.post(url, body, config);
+      if (response && response.data && response.status == 200) {
+        return response.data;
+      } else if (response && response.data && response.data.message) {
+        return { error: response.data.message };
+      } else {
+        return { error: "Sorry. Error on checking account." };
+      }
+    } catch (error) {
+      console.log(error);
+      return { error: error.message }
+    }
+  },
+
 }

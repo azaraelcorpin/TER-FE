@@ -212,7 +212,7 @@ export default{
         },
             
     },
-    mounted(){
+    activated(){
         this.queryData();
     },
     watch: {
