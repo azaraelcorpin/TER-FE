@@ -279,4 +279,42 @@ export default{
     }
   },
 
+  async updateTerSched(item) {
+    var url = `${process.env.VUE_APP_TER_API_URL}/TerSched/update`
+    const config =await this.getAuthorization();
+    const body = item
+    try {
+      const response = await Vue.axios.post(url, body, config);
+      if (response && response.data && response.status == 200) {
+        return response.data;
+      } else if (response && response.data && response.data.message) {
+        return { error: response.data.message };
+      } else {
+        return { error: "Sorry. Error on checking account." };
+      }
+    } catch (error) {
+      console.log(error);
+      return { error: error.message }
+    }
+  },
+
+  async getTerItems() {
+    var url = `${process.env.VUE_APP_TER_API_URL}/terItems`
+    const config =await this.getAuthorization();
+    const body = {}
+    try {
+      const response = await Vue.axios.post(url, body, config);
+      if (response && response.data && response.status == 200) {
+        return response.data;
+      } else if (response && response.data && response.data.message) {
+        return { error: response.data.message };
+      } else {
+        return { error: "Sorry. Error on checking account." };
+      }
+    } catch (error) {
+      console.log(error);
+      return { error: error.message }
+    }
+  },
+
 }

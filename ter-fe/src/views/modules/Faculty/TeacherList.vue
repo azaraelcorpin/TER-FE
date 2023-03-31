@@ -14,6 +14,7 @@
                         <v-tooltip bottom>
                         <template v-slot:activator="{ on, attrs }">
                             <v-btn v-bind="attrs"
+                            @click="evaluate(teacher)"
                             v-on="on" 
                             style="border: none;" :disabled="Boolean(teacher.validated)"  class="w-100" outlined>{{ teacher.fullname }}                        
                             </v-btn><br>
@@ -60,6 +61,9 @@ import API from "@/API/api.js"
   mounted(){   
     this.queryData()
   },
+  activated(){   
+    this.queryData()
+  },
   methods: {
         async queryData() {
         try {
@@ -73,7 +77,7 @@ import API from "@/API/api.js"
                         text: response.error.data.message,
                         })
                     } else {
-                        console.log('lis',JSON.parse(JSON.stringify(response.FacultyList)))
+                        // console.log('lis',JSON.parse(JSON.stringify(response.FacultyList)))
                         this.teachers = JSON.parse(JSON.stringify(response.FacultyList))
                         this.teachers.sort((a, b) => {
                         // Check if either a or b is validated
@@ -102,6 +106,10 @@ import API from "@/API/api.js"
                     alert(error)
                 } 
         },
+        evaluate(item){
+          localStorage.setItem('routeParams',JSON.stringify(item))
+          this.$router.push({ name: 'terForm'})
+        }
     }
   };
   </script>

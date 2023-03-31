@@ -2,6 +2,7 @@
   <div>
   <teacher-list v-if="['P','H'].includes(this.$cookies.get('_SID_').eval_type??'X')"/>
   <COR v-if="['S'].includes(this.$cookies.get('_SID_').eval_type??'X')"/>
+  <Admin v-if="this.$cookies.get('_SID_').AdminUser"/>
 </div> 
 </template>
 
@@ -11,6 +12,7 @@ import Swal from 'sweetalert2'
 import TeacherList from './modules/Faculty/TeacherList.vue';
 import API from "@/API/api.js"
 import COR from './modules/Student/COR.vue';
+import Admin from './modules/Admin/Admin.vue';
 // import API from '@/API/api';
   // import TestGoogle from '../views/google.vue';
 
@@ -21,7 +23,8 @@ import COR from './modules/Student/COR.vue';
       // TestGoogle,
       // HelloWorld,
       TeacherList,
-      COR
+      COR,
+      Admin
       
     },
     data () {

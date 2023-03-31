@@ -1,51 +1,7 @@
 <template>
   <v-container fluid>
-  <v-card style="overflow-y: scroll;height: 90vh;overflow-x: hidden; position: relative;" >
-    <div ref="terForm"></div>
-    <v-card style="position: sticky;top: 0;z-index: 1;"> 
-      <div class="Hcontainer">
-        <div class="item"><strong>Faculty:</strong>&nbsp;{{ evaluateeInfo.fullname }}</div>
-        <div class="item"><strong>Subject:</strong>&nbsp;{{evaluateeInfo.subjcode??'N/A'}}</div>
-        <div class="item"><strong>Time/Day:</strong>&nbsp;{{evaluateeInfo.time??'N/A'}}&nbsp;{{ evaluateeInfo.days }}</div>
-        <div class="item"><strong>Section:</strong>&nbsp;{{evaluateeInfo.section??'N/A'}}</div>
-      </div>
-        <v-row style="margin-top: 0;border: solid;padding: 0;">
-        <v-col cols="12">
-        <v-row>
-          <v-col cols="3" style="text-align: center;padding: 0%;">
-            <strong>
-                Never
-            </strong>
-              <br/>
-              5            
-          </v-col>
-          <v-col cols="3" style="text-align: center;padding: 0%;">
-            <strong>
-              Seldom
-            </strong>
-            <br/>
-            6-7
-          </v-col>
-          <v-col cols="3" style="text-align: center;padding: 0%;">
-            <strong>
-              Often
-            </strong>
-            <br/>
-            8-9
-          </v-col>
-          <v-col cols="3" style="text-align: center;padding: 0%;">
-            <strong>
-              Always
-            </strong>
-            <br/>
-            10
-          </v-col>
-        </v-row>
-      </v-col>
-      </v-row>
-    </v-card>    
-    <v-card style="margin-top:10px;" v-if="!loading">
-      <i><strong>Direction:</strong> Please answer all question carefully. Choose the approriate number which corresponds to your honest evaluation.</i>    
+  <v-card  >
+    <v-card style="margin-top:10px;" v-if="!loading">  
       <v-row>
       <v-col v-for="(item,index)  in items" :key="item.qstnNumber" :cols="showButton?'12':'6'">
           <v-card  style="margin-bottom: 10px;">
@@ -228,7 +184,8 @@ export default {
             return false;
             return this.$refs.myInputRef.value !== '';
           }catch{ return false;}
-        }
+        },
+
     },
   methods: {
      submitForm(){      
@@ -376,13 +333,13 @@ export default {
     },
     isCompleteAnswer(){
       for(let i=0;i<this.items.length;i++){
-        if((this.items[i].score??'required') === 'required'){
+        if(this.items[i].score === null){
           Swal.fire({
           title: 'Requires',
-          text: 'Please review item number '+(i+1),
+          text: 'Please review item number '+i+1,
           icon: 'error'
         })
-          return 1;
+          return;
         }
       }
       this.showButton = !this.showButton;this.showDialogReviewScore();

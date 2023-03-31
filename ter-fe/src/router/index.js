@@ -27,6 +27,16 @@ export const ConstRoutes = [
     visible:false,
   },
   {
+    path: '/terFormMgt',
+    name: 'terFormMgt',
+    component: () => import('../views/modules/Admin/TerFormMgt.vue'),
+    meta:{
+      title:"Evaluation Form",
+    },
+    icon: "mdi-account-box",
+    visible:false,
+  },
+  {
     path: '/admin',
     name: 'admin',
     component: () => import('../views/modules/Admin/Admin.vue'),

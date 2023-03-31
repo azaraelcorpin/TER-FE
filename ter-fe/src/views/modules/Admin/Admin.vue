@@ -4,9 +4,13 @@
      <User/> 
     </v-card>
     
-    <v-card>
+    <v-card class="mb-5">
      <TerSched/> 
     </v-card>
+
+    <!-- <v-card class="mb-5">
+      <EvaluationItems/>
+    </v-card> -->
     
   </v-container> 
 </template>
@@ -16,13 +20,15 @@ import Swal from 'sweetalert2'
 import API from "@/API/api.js"
 import User from './User.vue'
 import TerSched from './TerSched.vue'
+// import EvaluationItems from './EvaluationItems.vue'
 
   export default {
     name: 'AdminPage',
 
     components: {  
       User,    
-      TerSched
+      TerSched,
+      // EvaluationItems
     },
     data () {
       return {        

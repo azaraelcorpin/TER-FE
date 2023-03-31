@@ -2,9 +2,8 @@
 <div >
     
     <v-card-title>
-      TER SCHEDULES
+      SCHEDULES AND EVALUATION ITEMS
       <v-spacer></v-spacer>
-
     </v-card-title>
 
        <v-data-table
@@ -12,31 +11,45 @@
                 hide-default-footer
                 class="elevation-1"
                 :headers="table_header"
-                :items="items"
+                :items="(table_loading)?[]:items"
+                :loading="table_loading"                
                 >
+            <template v-slot:[`item.date_end`]="{ item }">
+                {{ dateToString(item.date_end) }}
+            </template>
+            <template v-slot:[`item.date_start`]="{ item }">
+                {{ dateToString(item.date_start) }}
+            </template>
             <template v-slot:[`item.controls`]="{ item }">
                 <!-- <v-icon medium color="green" > mdi-magnify-plus </v-icon> -->
-                <v-icon v-if="item.status!=='open'"
-                  medium
-                  color="green"
-                  @click="open(item)"
-                >
-                mdi-checkbox-marked-circle-outline
-                </v-icon>
-                
-                <v-icon v-else
+                <v-icon class="mr-1" v-if="item.status!=='open'"
                   medium
                   color="gray"
-                  @click="close(item)"
+                  @click="open(item)"
                 >
                 mdi-close-circle-outline
                 </v-icon>
-                <v-icon
+                
+                <v-icon class="mr-1" v-else
                   medium
-                  :color="(item.status!=='open')?'green':'black'"
+                  color="green"
+                  @click="close(item)"
+                >
+                mdi-checkbox-marked-circle-outline
+                </v-icon>
+                <v-icon class="mr-1"
+                  medium
+                  :color="(item.status==='open')?'green':'black'"
                   @click="dialog=true,selectedItem=item"
                 >
                 mdi-pencil
+                </v-icon>
+                <v-icon
+                  medium
+                  :color="(item.status==='open')?'green':'black'"
+                  @click="manageTer(item)"
+                >
+                mdi-login
                 </v-icon>
                 
               </template>
@@ -63,15 +76,15 @@
                     <v-container>
                         <v-row>
                             <v-col cols="6">
-                            <DatePicker label="Date Start" @on-select="(val)=>{datestart=val}"></DatePicker>
+                            <DatePicker v-if="dialog" label="Date Start" :date-val="selectedItem.date_start"  @on-select="(val)=>{date_start=val}"></DatePicker>
                             </v-col>
                             <v-col cols="6">
-                            <DatePicker label="Date End" @on-select="(val)=>{dateend=val}"></DatePicker>
+                            <DatePicker v-if="dialog" label="Date End" :date-val="selectedItem.date_end" @on-select="(val)=>{date_end=val}"></DatePicker>
                             </v-col>
                         </v-row>
                     </v-container>  
                     </v-card-text>
-                    <v-card-actions>
+                    <v-card-actions>                        
                     <v-spacer></v-spacer>
                     <v-btn
                         color="blue darken-1"
@@ -83,7 +96,7 @@
                     <v-btn
                         color="blue darken-1"
                         text
-                        @click="dialog = false;selectedItem.dateStart=datestart;selectedItem.dateEnd=dateend;"
+                        @click="updateSched(selectedItem);"
                     >
                         Save
                     </v-btn>
@@ -112,29 +125,42 @@ export default{
           value: "sy",
         },
         {
+          text: "Items for Head Evaluators",
+          value: "h",
+        },
+        {
+          text: "Items for Peer-peer Evaluators",
+          value: "p",
+        },
+        {
+          text: "Items for Student Evaluators",
+          value: "s",
+        },  
+        {
           text: "Start",
-          value: "dateStart",
+          value: "date_start",
         },
         {
           text: "End",
-          value: "dateEnd",
+          value: "date_end",
         },
         {
           text: "Status",
           value: "status",
-        },
+        },        
         {
           text: "Actions",
           value: "controls",
           sortable: false,
         },
             ],
-        dialog:true,
+        dialog:false,
         menu:false,
-        datestart:new Date(),
-        dateend:new Date(),
+        date_start:"",
+        date_end:"",
         selectedItem:{},
         confirm_dialog:false,
+        table_loading:false,
         rules: {
                 noSpace: v => (!v?.includes(' ')) || "No space allowed.",
                 requiredField: v => !!v || "Required field.",
@@ -154,13 +180,22 @@ export default{
     methods:{
         async queryData() {
             try {
+                this.table_loading=true;
                 const response = await API.getTerSchedAll();
                 if (response.error) {
                 // error getting data
                 console.log(`${response.error}`);
-                } else {
-                    
+                } else {                    
                 this.items = response.items;
+                this.items.forEach(item=>{
+                    if(item.date_start){
+                        item.date_start = new Date(item.date_start);
+                    }
+                    if(item.date_end){
+                        item.date_end = new Date(item.date_end);
+                    }
+                });
+                this.table_loading=false;
                 }
             } catch (e) {
                 console.log(e);
@@ -222,6 +257,48 @@ export default{
                 }
                 })
             },
+            async updateSched(item){                
+                try {
+                        if(this.date_end && this.date_start){
+                            if(new Date(this.date_end) <= new Date(this.date_start)){
+                                Swal.fire({
+                                    title: 'Invalid',
+                                    text: `Start should not be later than end`,
+                                    icon: 'error',
+                                })
+                                return;
+                            }
+                        }
+                    this.selectedItem.date_start=this.date_start?new Date(this.date_start):null;
+                    this.selectedItem.date_end=this.date_end?new Date(this.date_end):null;                        
+                    this.table_loading=true;
+                        const response = await API.updateTerSched(item);
+                        if (response.error) {
+                        // error getting data
+                        console.log(`${response.error}`);
+                        Swal.fire({
+                                title: 'Error',
+                                text: `${response.error}`,
+                                icon: 'error',
+                            })
+                        } else {
+                            this.dialog = false;
+                            Swal.fire({
+                                title: 'Updated',
+                                text: 'Successfully Updated',
+                                icon: 'success',
+                            })                            
+                        }
+                    } catch (e) {
+                        console.log(e);
+                    }
+                    this.table_loading=false;
+                    
+            },
+
+            async openTerItems(item){
+                alert('Open'+item.sy)
+            },
 
             checkOpenCounts(){
                 let openCount = 0;
@@ -238,7 +315,29 @@ export default{
                     return true
                 }
                 return false;
+            },
+            dateToString(item){
+                if(item){
+                    // let options = { year: 'numeric', month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: true };
+                    let formattedDate = item.toISOString().substring(0, 10);    
+                    return formattedDate; 
+                }
+                return '';
+            },
+            getRowClass(item) {
+      // Return the CSS classes to apply to the row
+
+            if (item.status === 'open') {
+                return 'row-even';
+            } else {
+                return 'row-odd';
             }
+            },
+
+            manageTer(item){
+          localStorage.setItem('routeParams',JSON.stringify(item))
+          this.$router.push({ name: 'terFormMgt'})
+        }
 
         // async removeUser(user){
 
@@ -336,9 +435,23 @@ export default{
         // whenever question changes, this function will run
         dialog(newState) {
         if (newState === true) {
-            this.alert_show=false;
+            
+            // this.date_start="";
+            // this.date_end="";
         }
         }
     }
 }
 </script>
+<style>
+.row-even {
+  background-color: #4bbe16;
+  
+}
+.row-even :hover{
+    background-color: #82e056;
+}
+.row-odd {
+  background-color: #e0e0e0;
+}
+</style>
