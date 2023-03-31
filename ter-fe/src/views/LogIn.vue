@@ -1,140 +1,227 @@
 <template>
-    <div style="background-color:aqua;display: flex; align-items: center;
-    justify-content: center;
-    height: 100vh;">
-    {{displaytext}}
-    <v-btn @click="handleClickSignIn" v-if="displaytext==''"> 
-    <span>Sign In via Google</span></v-btn>
-    <!-- <v-btn @click="handleClickSignOut" v-if="isSignIn" :disabled="!isInit">signOout</v-btn> -->
-        <!-- <img :src="GoogleLogo" alt="Google Logo" /> -->
-       
-
+  <div style="background-color:aqua;display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; position: relative;">
+    <div style=" align-items: center; justify-content: center;position: absolute; top: 20px; font-size: 48px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-weight: bold; color: black;">
+      Mindanao State University</div>
+      <div  style="position: absolute;margin-bottom: 30%;  font-size: 20px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-weight: bold; color: black;">
+      Junior HighSchool Department
+    </div>
+    <div  style="position: absolute;margin-bottom: 20%;  font-size: 20px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-weight: bold; color: black;">
+      TEACHER EFFICIENCY RATING
+    </div>
+    <br/>
+    <div style="position: relative;">
+      {{displaytext}}
+      <v-btn @click="handleClickSignIn" v-if="displaytext==''"> 
+        <span>Sign In</span>
+      </v-btn>
+      <!-- <div style="position: absolute; top: 90px; left: 50%; transform: translateX(-50%); animation: arrow 1s infinite;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
+          <path fill="#4CAF50" d="M12 17.3l-5.6-5.6c-.4-.4-.4-1 0-1.4s1-.4 1.4 0l4.9 4.9V2c0-.6.4-1 1-1s1 .4 1 1v13.2l4.9-4.9c.4-.4 1-.4 1.4 0s.4 1 0 1.4L12 17.3z"/>
+        </svg>
+      </div> -->
+    </div>
+    <v-btn @click=" dialog=true" class="mt-5" color="green">Test Here</v-btn>
+        <v-dialog v-model="dialog" persistent>
+          <v-card>
+            <v-card-title>
+              Select Role
+            </v-card-title>
+            <v-card-text>
+              <v-radio-group v-model="selectedRole" inline>
+                <v-radio value="dean" label="As Dean"></v-radio>
+                <v-radio value="director" label="As Director"></v-radio>
+                <v-radio value="faculty" label="As Faculty"></v-radio>
+                <v-radio value="student" label="As Student"></v-radio>
+              </v-radio-group>
+              <v-select v-if="selectedRole === 'faculty'" v-model="selectedFaculty" :items="faculty" label="Select faculty"></v-select>
+              <v-select v-if="selectedRole === 'student'" v-model="selectedStudent" :items="students" label="Select Student"></v-select>
+            </v-card-text>
+            <v-card-actions>
+              <v-btn @click="dialog = false">Cancel</v-btn>
+              <v-btn @click="confirmSelection">OK</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
   </div>
-    <!-- <div>
-      <h1>Test</h1>{{globalStore.profilePicUrl}}
-      <v-btn @click="handleClickGetAuth">get auth code</v-btn>
-      <v-btn @click="handleClickSignIn" v-if="!isSignIn" :disabled="!isInit">signIn</v-btn>
-      <v-btn @click="handleClickSignOut" v-if="isSignIn" :disabled="!isInit">signOout</v-btn>
-    </div> -->
-  </template>
-  
-  <script>
-  /** 
-  * You should first need to place these 2 lines of code in your APP ENTRY file, e.g. src/main.js
-  *
-  * import GAuth from 'vue-google-oauth2'
-  * Vue.use(GAuth, {clientId: '4584XXXXXXXX-2gqknkvdjfkdfkvb8uja2k65sldsms7qo9.apps.googleusercontent.com'})
-  * 
-  */
-  // import GAuth from 'vue-google-oauth2'
-  import Vue from 'vue';
-  import {globalStore} from '@/main.js'
-  import API from "@/API/api.js"
+</template>
 
-  export default {
-    name: 'LogIn',
-    data () {
-      return {
-        isInit: false,
-        isSignIn: false,
-        info:"",
-        globalStore,
-        displaytext:"",
+<style>
+  @keyframes arrow {
+    0% { top: 10px; }
+    50% { top: 20px; }
+    100% { top: 10px; }
+  }
+</style>
+
+
+
+
+
+<script>
+/** 
+* You should first need to place these 2 lines of code in your APP ENTRY file, e.g. src/main.js
+*
+* import GAuth from 'vue-google-oauth2'
+* Vue.use(GAuth, {clientId: '4584XXXXXXXX-2gqknkvdjfkdfkvb8uja2k65sldsms7qo9.apps.googleusercontent.com'})
+* 
+*/
+// import GAuth from 'vue-google-oauth2'
+import Vue from 'vue';
+import API from "@/API/api.js"
+import Swal from 'sweetalert2'
+
+export default {
+  name: 'LogIn',
+  data () {
+    return {
+      isInit: false,
+      isSignIn: false,
+      info:"",
+      displaytext:"",
+
+      dialog: false,
+      selectedRole: '',
+      selectedStudent: '',
+      selectedFaculty: '',
+      students: ['daniloiii.abelinde@msugensan.edu.ph', 'sharie.colano@msugensan.edu.ph', 'angel.abao@msugensan.edu.ph','jasmine.limjap@msugensan.edu.ph'],
+      faculty: ['jessica.belandres@msugensan.edu.ph', 'ayna.aguja@msugensan.edu.ph', 'katrinajoie.buhian@msugensan.edu.ph','carmelo.guillermo@msugensan.edu.ph'],
+      resolve: null
+    }
+  },  
+
+  methods: {
+    async handleClickGetAuth() {
+      try {
+        const authCode = await this.$gAuth.getAuthCode()
+          console.log('asd1',authCode);
+        // const response = await this.$http.post('http://localhost:3000', { code: authCode, redirect_uri: 'http://localhost:3000' })
+        // console.log(response);
+      } catch (error) {
+        // On fail do something
+        console.log('asd',error);
       }
     },
-  
-    methods: {
-      async handleClickGetAuth() {
-        try {
-          const authCode = await this.$gAuth.getAuthCode()
-            console.log('asd1',authCode);
-          // const response = await this.$http.post('http://localhost:3000', { code: authCode, redirect_uri: 'http://localhost:3000' })
-          // console.log(response);
-        } catch (error) {
-          // On fail do something
-          console.log('asd',error);
-        }
-      },
-  
-      async handleClickSignIn(){
-        try {
-          this.displaytext = "Checking Account....";
-          const googleUser = await this.$gAuth.signIn()
-          console.log('googleUser', googleUser)
-          console.log("test",this.$gAuth)
-          console.log('user', googleUser.getBasicProfile().getId())          
-          let currentUserProfile = googleUser.getBasicProfile();
-          
 
-            const response = await Vue.axios.get('https://people.googleapis.com/v1/people/'+currentUserProfile.getId()
-              +'?personFields=photos&key='+process.env.VUE_APP_GOOGLE_API_KEY);
+    async handleClickSignIn(){
+      try {
+        this.displaytext = "Checking Account....";
+        const googleUser = await this.$gAuth.signIn()
+        // // console.log('googleUser', googleUser)
+        // // console.log("test",this.$gAuth)
+        // // console.log('user', googleUser.getBasicProfile().getId())          
+        let currentUserProfile = googleUser.getBasicProfile();
+        
 
-            console.log(response.data.photos[0].url);
-            this.globalStore.profilePicUrl = (response.data.photos[0].url).split("=", 1)[0];  
-            this.globalStore.userName = currentUserProfile.getName();
-            // this.globalStore.userEmail = currentUserProfile.getEmail();  
-            this.globalStore.userEmail = 'esmaida.andang@msugensan.edu.ph';          
-            if(!this.globalStore.userEmail.includes('@msugensan')){
-              this.handleClickSignOut();
-              alert('Invalid email account');
-              return;
-            }
-            try {
-                  let response = await API.checkAccount();
-                  console.log("response: ", response.user);
-                  if (response.error) {
-                      console.log(response);
-                  } else {
-                    response.user.expiration = new Date().getTime() + 60 * 60 * 1000;// if no request to Backend within 1 hour... session log out.. 
-                    this.globalStore.user = response.user;
-                    response.user.profilePicUrl = this.globalStore.profilePicUrl;
-                    response.user.userName = this.globalStore.userName;
-                    this.$cookies.set('session',JSON.stringify(response.user),'1d');
-                    console.log('cook',this.$cookies.get('session'));
-                  }
-              } catch (error) {
-                  alert(error)
-                  console.log(error.message);
-              } 
-            console.log(this.globalStore.profilePicUrl);
-            this.isSignIn = this.$gAuth.isAuthorized
-        } catch (error) {
-          // On fail do something
-          console.error(error);
-          return null;
-        }
-      },
-  
-      async handleClickSignOut(){
-        try {
-          await this.$gAuth.signOut()
+          const response = await Vue.axios.get('https://people.googleapis.com/v1/people/'+currentUserProfile.getId()
+            +'?personFields=photos&key='+process.env.VUE_APP_GOOGLE_API_KEY);
+
+        //   // console.log(response.data.photos[0].url);
+          let profilePicUrl = (response.data.photos[0].url).split("=", 1)[0];  
+          let userName = currentUserProfile.getName();
+          // this.globalStore.userEmail = currentUserProfile.getEmail();  
+          let userEmail =currentUserProfile.getEmail();// 'mariatheresa.pelones@msugensan.edu.ph' //'azelamaye.arbilo@msugensan.edu.ph'; sample email currentUserProfile.getEmail();
+          if(!userEmail.includes('@msugensan')){
+            this.handleClickSignOut();
+            alert('Invalid email account');
+            return;
+          }
+          try {
+                let response = await API.checkAccount(userEmail);
+                if (response.error) {
+                    console.log(response);
+                    this.handleClickSignOut();
+                    this.displaytext='';
+                    Swal.fire({
+                      icon: 'error',
+                      title: response.error.data.statusCode,
+                      text: response.error.data.message,
+                    })
+                } else {
+                  response.user.profilePicUrl = profilePicUrl;
+                  response.user.userName = userName;
+                  this.$cookies.set('_SID_',JSON.stringify(response.user),'1d');
+                }
+            } catch (error) {
+                alert(error)
+                console.log(error.message);                
+                this.handleClickSignOut();
+                this.displaytext='';
+            } 
           this.isSignIn = this.$gAuth.isAuthorized
-          this.globalStore.profilePicUrl = ''
-          this.globalStore.userName = '';
-          this.globalStore.userEmail = ''; 
-        } catch (error) {
-          // On fail do something
-          console.error(error);
-        }
+      } catch (error) {
+        // On fail do something
+        console.error(error);
+        return null;
+      }
+    },
+
+  async  confirmSelection() {
+      
+
+        let userEmail=''
+
+        
+          if(this.selectedRole === 'dean'){userEmail = 'mariatheresa.pelones@msugensan.edu.ph';}
+          else if(this.selectedRole === 'director'){ userEmail = 'esmaida.andang@msugensan.edu.ph';}
+          else if(this.selectedRole === 'faculty') {userEmail = this.selectedFaculty;}
+          else if(this.selectedRole === 'student'){ userEmail = this.selectedStudent;}
+
+        if(userEmail === '')
+        return;
+
+        try {
+                let response = await API.checkAccount(userEmail);
+                if (response.error) {
+                    console.log(response);
+                    this.handleClickSignOut();
+                    this.displaytext='';
+                    Swal.fire({
+                      icon: 'error',
+                      title: response.error.data.statusCode,
+                      text: response.error.data.message,
+                    })
+                } else {
+                  // response.user.profilePicUrl = profilePicUrl;
+                  response.user.userName = userEmail;
+                  this.$cookies.set('_SID_',JSON.stringify(response.user),'1d');
+                }
+            } catch (error) {
+                alert(error)
+                console.log(error.message);                
+                this.handleClickSignOut();
+                this.displaytext='';
+            } 
+            this.dialog = false
+
       },
 
-      // getProfileImage:async function (Id) {
-      //   try {
-      //     const response = await this.$https.get('https://people.googleapis.com/v1/people/'+Id
-      //     +'?personFields=photos&key='+process.env.VUE_APP_GOOGLE_API_KEY);
-      //     console.log(response);
-      //     // return response;
-
-      //   } catch (error) {
-      //     // On fail do something
-      //     console.log('asd',error);
-      //   }
-      //   return "";
-      // },
+    async handleClickSignOut(){
+      try {
+        await this.$gAuth.signOut()
+        this.displaytext='';
+      } catch (error) {
+        // On fail do something
+        console.error(error);
+      }
     },
-    async mounted(){
 
-    }
-    
+    // getProfileImage:async function (Id) {
+    //   try {
+    //     const response = await this.$https.get('https://people.googleapis.com/v1/people/'+Id
+    //     +'?personFields=photos&key='+process.env.VUE_APP_GOOGLE_API_KEY);
+    //     console.log(response);
+    //     // return response;
+
+    //   } catch (error) {
+    //     // On fail do something
+    //     console.log('asd',error);
+    //   }
+    //   return "";
+    // },
+  },
+  async mounted(){
+
   }
-  </script>
+  
+}
+</script>

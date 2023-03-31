@@ -4,36 +4,36 @@
     <div ref="terForm"></div>
     <v-card style="position: sticky;top: 0;z-index: 1;"> 
       <div class="Hcontainer">
-        <div class="item"><strong>Faculty:</strong>&nbsp;Juan Dela dsfsdfs sdfdfsfsfs</div>
-        <div class="item"><strong>Subject:</strong>&nbsp;Science 101</div>
-        <div class="item"><strong>Time/Day:</strong>&nbsp;1:00-5:00 MWF</div>
-        <div class="item"><strong>Section:</strong>&nbsp;1</div>
+        <div class="item"><strong>Faculty:</strong>&nbsp;{{ evaluateeInfo.fullname }}</div>
+        <div class="item"><strong>Subject:</strong>&nbsp;{{evaluateeInfo.subjcode??'N/A'}}</div>
+        <div class="item"><strong>Time/Day:</strong>&nbsp;{{evaluateeInfo.time??'N/A'}}&nbsp;{{ evaluateeInfo.days }}</div>
+        <div class="item"><strong>Section:</strong>&nbsp;{{evaluateeInfo.section??'N/A'}}</div>
       </div>
         <v-row style="margin-top: 0;border: solid;padding: 0;">
         <v-col cols="12">
         <v-row>
-          <v-col cols="3" style="text-align: center;">
+          <v-col cols="3" style="text-align: center;padding: 0%;">
             <strong>
                 Never
             </strong>
               <br/>
               5            
           </v-col>
-          <v-col cols="3" style="text-align: center;">
+          <v-col cols="3" style="text-align: center;padding: 0%;">
             <strong>
               Seldom
             </strong>
             <br/>
             6-7
           </v-col>
-          <v-col cols="3" style="text-align: center;">
+          <v-col cols="3" style="text-align: center;padding: 0%;">
             <strong>
               Often
             </strong>
             <br/>
             8-9
           </v-col>
-          <v-col cols="3" style="text-align: center;">
+          <v-col cols="3" style="text-align: center;padding: 0%;">
             <strong>
               Always
             </strong>
@@ -44,7 +44,7 @@
       </v-col>
       </v-row>
     </v-card>    
-    <v-card style="margin-top:10px;" >
+    <v-card style="margin-top:10px;" v-if="!loading">
       <i><strong>Direction:</strong> Please answer all question carefully. Choose the approriate number which corresponds to your honest evaluation.</i>    
       <v-row>
       <v-col v-for="(item,index)  in items" :key="item.qstnNumber" :cols="showButton?'12':'6'">
@@ -123,7 +123,7 @@
     <v-row align="center" justify="center">
       <v-col cols="12" md="12">
         <v-card class="pa-8">
-          <v-textarea label="Comment:" variant="solo" clearable prepend-inner-icon="mdi-comment" :disabled="!showButton">
+          <v-textarea label="Comment:" variant="solo" clearable prepend-inner-icon="mdi-comment" :disabled="!showButton" v-model="comment">
           </v-textarea><br/>
           <v-flex class="d-flex justify-center">
             <input type="text" name="tokenHolder" ref="myInputRef" hidden/>
@@ -137,14 +137,14 @@
           </v-flex>
           <v-flex class="d-flex justify-center">
             <v-btn v-if="showButton"
-            @click="showButton = !showButton;showDialogReviewScore()"
+            @click="isCompleteAnswer"
             color="primary"
             >
               Proceed
             </v-btn>
             <v-btn  v-if="!showButton" class="ma-3"
             color="primary"
-            @click="showDialogReviewScore()"
+            @click="submitForm()"
             >
               SUBMIT
             </v-btn>
@@ -160,6 +160,12 @@
       </v-col>
     </v-row>
     </v-card>
+    <v-container fluid v-else style="display: flex; justify-content: center;">
+              <div>
+                <v-progress-circular indeterminate size="90"></v-progress-circular>
+                <div style="text-align: center; margin-top: 10px;">Loading... please wait</div>
+              </div>
+            </v-container>
   </v-card>
 </v-container>
 </template>
@@ -198,20 +204,90 @@ export default {
       headers: [
         { text: 'Subject Code', value: 'qstnNumber' },
       ],
-      table_loading:true,
+      loading:false,
+      evaluateeInfo:{},
+      comment:'',
     }
   },
-  mounted(){ 
-    this.queryData()
+  created(){ 
+    this.showButton=true;
+  },
+  activated(){  
+    if(localStorage.getItem('routeParams')===null)
+            this.$router.push({ name: 'Dashboard'})
+    this.evaluateeInfo = JSON.parse(localStorage.getItem('routeParams'));
+    this.queryData();  
   },
   computed:{
         computedItems() {
           return this.items
-    }
+        },
+        hasToken(){
+          try{
+            if(!this.$refs.myInputRef.value)
+            return false;
+            return this.$refs.myInputRef.value !== '';
+          }catch{ return false;}
+        }
     },
   methods: {
      submitForm(){      
-      console.log(this.$refs.myInputRef.value); // log the reCAPTCHA response to the console
+      // console.log(this.$refs.myInputRef.value); // log the reCAPTCHA response to the console
+      if(this.$refs.myInputRef.value === ''){
+        Swal.fire({
+          title: 'Requires',
+          text: 'Please review tick the checkbox',
+          icon: 'error'
+        })
+      }else{
+        console.log('items',this.items);
+        console.log('info',this.evaluateeInfo);
+        console.log('user',Vue.$cookies.get('_SID_'));
+        let _user = Vue.$cookies.get('_SID_');
+        let _evaluatee = this.evaluateeInfo;
+        let _eval = {
+                    "facultyId": _evaluatee.facultyid,
+                    "subjcode":  _evaluatee.subjcode?.trim(),
+                    "section": _evaluatee.section?.trim(),
+                    "evalType": _user.eval_type,
+                    "sy": _user.sy,
+                    "evalid": _user.id,
+                    "sem": _user.sem??'0',
+                    "q1": this.getScore(1),
+                    "q2": this.getScore(2),
+                    "q3": this.getScore(3),
+                    "q4": this.getScore(4),
+                    "q5": this.getScore(5),
+                    "q6": this.getScore(6),
+                    "q7": this.getScore(7),
+                    "q8": this.getScore(8),
+                    "q9": this.getScore(9),
+                    "q10": this.getScore(10),
+                    "q11": this.getScore(11),
+                    "q12": this.getScore(12),
+                    "q13": this.getScore(13),
+                    "q14": this.getScore(14),
+                    "q15": this.getScore(15),
+                    "q16": this.getScore(16),
+                    "q17": this.getScore(17),
+                    "q18": this.getScore(18),
+                    "q19": this.getScore(19),
+                    "q20": this.getScore(20),
+                    "q21": this.getScore(21),
+                    "q22": this.getScore(22),
+                    "comment": this.comment.trim(),
+                    "evalDate": new Date(),
+                    "insertedBy": null
+                }
+        this.submitEval(_eval);
+      }
+    },
+    getScore(qNumber){
+      qNumber--;
+      if(this.items[qNumber]){
+        return this.items[qNumber].score??null;
+      }
+      return null;
     },
     scrollToTop() {
       this.$refs.terForm.scrollIntoView({behavior:'smooth'})
@@ -253,6 +329,7 @@ export default {
     },    
     async queryData(){
       try {
+        this.loading = true;
                 let response = await API.getMyQuestionnaires();
                 if (response.error) {
                     console.log(response);                    
@@ -263,16 +340,64 @@ export default {
                     })
                 } else {
                   this.items = response.items 
+                  this.loading = false;
                 }
             } catch (error) {
                 alert(error)
                 console.log(error.message);                
-                Vue.$cookies.remove('_SID_');
                 localStorage.removeItem('routeParams');
                 this.displaytext='';
+            }             
+    },
+    async submitEval(_eval){
+      try {
+                let response = await API.saveEval(_eval);
+                if (response.error) {
+                    console.log(response);                    
+                    Swal.fire({
+                      icon: 'error',
+                      title: response.error.data.statusCode,
+                      text: response.error.data.message,
+                    })
+                } else {
+                  Swal.fire({
+                    title: 'Saved',
+                    text: 'Evaluation successfully submitted!',
+                    icon: 'success'
+                  }) 
+                  this.$router.push({ name: 'Dashboard'})
+                  localStorage.removeItem('routeParams');
+                  this.showButton=true;
+                }
+            } catch (error) {
+                alert(error)
+                console.log(error.message);                
             } 
+    },
+    isCompleteAnswer(){
+      for(let i=0;i<this.items.length;i++){
+        if((this.items[i].score??'required') === 'required'){
+          Swal.fire({
+          title: 'Requires',
+          text: 'Please review item number '+(i+1),
+          icon: 'error'
+        })
+          return 1;
+        }
+      }
+      this.showButton = !this.showButton;this.showDialogReviewScore();
     }
-  }
+  },
+  watch: {
+        // whenever question changes, this function will run
+        '$route' (to) {
+            // Code to run when route changes
+            if(to.name === 'terForm'){
+              this.evaluateeInfo = JSON.parse(localStorage.getItem('routeParams'));
+            }
+          },
+        
+    }
 }
 </script>
 
@@ -285,6 +410,7 @@ export default {
     flex-wrap: wrap; /* allow wrapping items to the next line */
     justify-content: space-between; /* distribute items evenly on each row */
     align-items: flex-start; /* align items to the top of the container */
+    padding: 5px;
   }
 
   .item {

@@ -10,7 +10,6 @@
 <script>
 import Layout from '@/views/layout/Layout.vue';
 import Login from '@/views/LogIn.vue'
-import {globalStore} from '@/main.js'
 import VueCookies from 'vue-cookies-reactive'
 Vue.use(VueCookies)
 import Vue from 'vue'
@@ -29,22 +28,16 @@ export default {
       return 'layout';
     },
     isSigned(){
-      return this.$cookies.get('session');
+      return this.$cookies.get('_SID_');
     }
   },
   methods: {
-    closeDialog() {
-      this.globalStore.messageDialog.show=false;
-      this.globalStore.messageDialog.title='';
-      this.globalStore.messageDialog.message='';
-    },
     
   },
 
   data(){
     return {
-      ConstRoutes,
-      globalStore,
+      ConstRoutes,      
       isOON:false,
       cookieValue:'',
       

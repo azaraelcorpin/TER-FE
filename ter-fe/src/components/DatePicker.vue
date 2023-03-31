@@ -1,23 +1,30 @@
 <template>
     <div>
-        <v-menu v-model="storageStartDateMenu" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y max-width="290px" min-width="290px">
+        <v-menu v-model="DateMenu" persistent :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y max-width="290px" min-width="290px">
             <template v-slot:activator="{ on }">
-                <v-text-field id="StorageStartDate-id" :label="label" prepend-icon="mdi-calendar" :value="storageStartDateDisp"  readonly  v-on="on" class="text-field-line-height-10px">
+                <v-text-field id="DateValue-id" :label="label" prepend-icon="mdi-calendar" :value="DateDisp"  readonly  v-on="on" class="text-field-line-height-10px">
                 </v-text-field>
             </template>
-            <v-date-picker locale="en-in" v-model="storageStartDate" no-title >
+            <v-date-picker locale="en-in" v-model="DateValue" no-title >
+                <v-btn
+                        color="red darken-1"
+                        text
+                        @click="($emit('on-select',null),((DateDisp = DateValue=''),DateMenu = false))"
+                    >
+                        Reset
+                    </v-btn>
                 <v-spacer></v-spacer>
                 <v-btn
                     text
                     color="primary"
-                    @click="storageStartDateMenu = false"
+                    @click="DateMenu = false"
                 >
                     Cancel
                 </v-btn>
                 <v-btn
                     text
                     color="primary"
-                    @click="(((storageStartDateDisp = storageStartDate),storageStartDateMenu = false),$emit('on-select',storageStartDate))"
+                    @click="($emit('on-select',DateValue),((DateDisp = DateValue),DateMenu = false))"
                 >
                     OK
                 </v-btn>
@@ -30,13 +37,26 @@
 export default {
     name: 'DatePicker',
     props:{
-        label:String
+        label:String,
+        DateVal:Date
     },          
     data: () => ({
-        storageStartDateMenu:false,
-        storageStartDate:"",
-        storageStartDateDisp:"",
+        DateMenu:false,
+        DateValue:"",
+        DateDisp:"",
     }),
+    activated(){     
+        let formattedDate = (this.DateVal)?this.DateVal.toISOString().substring(0, 10):null;    
+        this.DateDisp = formattedDate??"";
+        this.DateValue=this.DateDisp;
+        this.DateMenu=false;
+    },
+    created(){
+        let formattedDate = (this.DateVal)?this.DateVal.toISOString().substring(0, 10):null;    
+        this.DateDisp = formattedDate??"";
+        this.DateValue=this.DateDisp;
+        this.DateMenu=false;
+    }
 }
 </script>
 <style>

@@ -1,32 +1,34 @@
 <template>
-  <div>
-    <div v-if="this.$cookies.get('_SID_')">{{$cookies.get('_SID_')}}</div>
-    <v-btn @click="testerButton()"></v-btn>
-  <!-- <hello-world /> -->
-  <teacher-list/>
-  <COR/>
-  <!-- <test-google/> -->
-</div>
+  <v-container fluid>
+    <v-card class="mb-5">
+     <User/> 
+    </v-card>
+    
+    <v-card class="mb-5">
+     <TerSched/> 
+    </v-card>
+
+    <!-- <v-card class="mb-5">
+      <EvaluationItems/>
+    </v-card> -->
+    
+  </v-container> 
 </template>
 
 <script>
-// import HelloWorld from '../components/HelloWorld';
 import Swal from 'sweetalert2'
-import TeacherList from './modules/Teacher/TeacherList.vue';
 import API from "@/API/api.js"
-import COR from './modules/Student/COR.vue';
-// import API from '@/API/api';
-  // import TestGoogle from '../views/google.vue';
+import User from './User.vue'
+import TerSched from './TerSched.vue'
+// import EvaluationItems from './EvaluationItems.vue'
 
   export default {
-    name: 'HomeView',
+    name: 'AdminPage',
 
-    components: {
-      // TestGoogle,
-      // HelloWorld,
-      TeacherList,
-      COR
-      
+    components: {  
+      User,    
+      TerSched,
+      // EvaluationItems
     },
     data () {
       return {        
