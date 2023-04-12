@@ -140,6 +140,10 @@ export default {
                   response.user.profilePicUrl = profilePicUrl;
                   response.user.userName = userName;
                   this.$cookies.set('_SID_',JSON.stringify(response.user),'1d');
+                  try{this.$router.push({ name: 'Dashboard'})
+                  }catch(e){
+                    console.log(e)
+                  }
                 }
             } catch (error) {
                 alert(error)
