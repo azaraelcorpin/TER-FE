@@ -122,7 +122,12 @@ export default {
           let userEmail =currentUserProfile.getEmail();// 'mariatheresa.pelones@msugensan.edu.ph' //'azelamaye.arbilo@msugensan.edu.ph'; sample email currentUserProfile.getEmail();
           if(!userEmail.includes('@msugensan')){
             this.handleClickSignOut();
-            alert('Invalid email account');
+            Swal.fire({
+                      icon: 'error',
+                      title: 'Unauthorized',
+                      text: 'Invalid email account',
+                    })
+            // alert('Invalid email account');
             return;
           }
           try {
@@ -172,9 +177,10 @@ export default {
 
         if(userEmail === '')
         return;
-
+      console.log('1',userEmail)
         try {
                 let response = await API.checkAccount(userEmail);
+                console.log('2',response)
                 if (response.error) {
                     console.log(response);
                     this.handleClickSignOut();
@@ -188,6 +194,11 @@ export default {
                   // response.user.profilePicUrl = profilePicUrl;
                   response.user.userName = userEmail;
                   this.$cookies.set('_SID_',JSON.stringify(response.user),'1d');
+                  localStorage.removeItem('logOut')
+                  try{this.$router.push({ name: 'Dashboard'})
+                  }catch(e){
+                    console.log(e)
+                  }
                 }
             } catch (error) {
                 alert(error)

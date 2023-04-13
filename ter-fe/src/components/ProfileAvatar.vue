@@ -90,7 +90,6 @@ data: () => ({
 methods:{
   async handleClickSignOut(){
       try {
-        await this.$gAuth.signOut()
         this.$cookies.remove('_SID_');
         localStorage.removeItem('routeParams');
       } catch (error) {
