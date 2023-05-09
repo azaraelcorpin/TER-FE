@@ -9,6 +9,8 @@
         <div class="item"><strong>Time/Day:</strong>&nbsp;{{evaluateeInfo.time??'N/A'}}&nbsp;{{ evaluateeInfo.days }}</div>
         <div class="item"><strong>Section:</strong>&nbsp;{{evaluateeInfo.section??'N/A'}}</div>
       </div>
+      <i><strong>Direction:</strong> Please answer all question carefully. Choose the approriate number which corresponds to your honest evaluation.<br>
+      Where 10 is the highest.</i>
         <v-row style="margin-top: 0;border: solid;padding: 0;">
         <v-col cols="12">
         <v-row>
@@ -45,7 +47,6 @@
       </v-row>
     </v-card>    
     <v-card style="margin-top:10px;" v-if="!loading">
-      <i><strong>Direction:</strong> Please answer all question carefully. Choose the approriate number which corresponds to your honest evaluation.</i>    
       <v-row>
       <v-col v-for="(item,index)  in items" :key="item.qstnNumber" :cols="showButton?'12':'6'">
           <v-card  style="margin-bottom: 10px;">
@@ -123,16 +124,30 @@
     <v-row align="center" justify="center">
       <v-col cols="12" md="12">
         <v-card class="pa-8">
-          <v-textarea label="Comment:" variant="solo" clearable prepend-inner-icon="mdi-comment" :disabled="!showButton" v-model="comment">
+         <span v-if="!showButton" @click="askToGoback()">
+          <v-icon>
+            mdi-comment
+          </v-icon>
+            {{ comment }}
+         </span>
+          <v-textarea v-else label="Comment:" variant="solo" clearable prepend-inner-icon="mdi-comment" :disabled="!showButton" v-model="comment">
           </v-textarea><br/>
           <v-flex class="d-flex justify-center">
             <input type="text" name="tokenHolder" ref="myInputRef" hidden/>
-            <div 
+            <!-- <div 
                 :style="!showButton?'visibility:visible':'visibility:hidden'"
                 class="g-recaptcha" 
                 ref="recaptcha" 
                 data-sitekey="6Ld58w8lAAAAAI1-DKsC2mncU6dR9s6imuEchmA2" 
                 data-callback="myFunction">              
+            </div> -->
+            <div>
+              <vue-recaptcha    
+              :style="!showButton?'visibility:visible':'visibility:hidden'"          
+                ref="recaptcha"
+                @verify="onCaptchaVerified"
+                sitekey="6LeUzJclAAAAAAWNe8EyZGRj7qr8v9_HqjmJzVwg"
+              />
             </div>
           </v-flex>
           <v-flex class="d-flex justify-center">
@@ -174,12 +189,13 @@
 import Vue from 'vue';
 import API from '@/API/api'
 import Swal from 'sweetalert2'
+import VueRecaptcha from 'vue-recaptcha';
 // import { VueReCaptcha } from 'vue-recaptcha-v3'
 
 // Vue.use(VueReCaptcha,{siteKey:'6LfK_jQlAAAAAPm9RqR70wq9X2LiVw0SCQ-3kfKh'})
 
 export default {
-  
+
   metaInfo: {
     script: [
       { src: 'https://www.google.com/recaptcha/api.js', async: true, defer: true },
@@ -194,7 +210,8 @@ export default {
     ]
   },
 
-  components:{   
+  components:{ 
+    VueRecaptcha  
   },
   data() {
     return {
@@ -216,7 +233,8 @@ export default {
     if(localStorage.getItem('routeParams')===null)
             this.$router.push({ name: 'Dashboard'})
     this.evaluateeInfo = JSON.parse(localStorage.getItem('routeParams'));
-    this.queryData();  
+    this.queryData();
+    this.comment = '';  
   },
   computed:{
         computedItems() {
@@ -231,6 +249,10 @@ export default {
         }
     },
   methods: {
+    onCaptchaVerified(response) {
+      // console.log('token',response);
+      this.$refs.myInputRef.value = response
+    },
      submitForm(){      
       // console.log(this.$refs.myInputRef.value); // log the reCAPTCHA response to the console
       if(this.$refs.myInputRef.value === ''){
@@ -304,7 +326,7 @@ export default {
     }).then((result) => {
       if (result.isConfirmed) {
         this.showButton = true;
-        this.$refs.terForm.scrollIntoView({behavior:'smooth'})
+        //this.$refs.terForm.scrollIntoView({behavior:'smooth'})
       }
     })
   },
