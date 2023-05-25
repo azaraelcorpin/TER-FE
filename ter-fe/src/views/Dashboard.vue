@@ -1,5 +1,6 @@
 <template>
   <div>
+    <ChartVue v-if="['P'].includes(this.$cookies.get('_SID_').eval_type??'X')"></ChartVue>
   <!-- <teacher-list v-if="['P','H'].includes(this.$cookies.get('_SID_').eval_type??'X')"/> -->
   <TeacherList1 v-if="['P','H'].includes(this.$cookies.get('_SID_').eval_type??'X')"/>
   <COR v-if="['S'].includes(this.$cookies.get('_SID_').eval_type??'X')"/>
@@ -15,6 +16,7 @@ import TeacherList1 from './modules/Faculty/TeacherList1.vue';
 import API from "@/API/api.js"
 import COR from './modules/Student/COR.vue';
 import Admin from './modules/Admin/Admin.vue';
+import ChartVue from './Chart.vue';
 // import API from '@/API/api';
   // import TestGoogle from '../views/google.vue';
 
@@ -22,6 +24,7 @@ import Admin from './modules/Admin/Admin.vue';
     name: 'HomeView',
 
     components: {
+      ChartVue,
       // TestGoogle,
       // HelloWorld,
       // TeacherList,

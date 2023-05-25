@@ -10,9 +10,8 @@
     </div>
     <br/>
     <div style="position: relative;">
-      {{displaytext}}
-      <v-btn @click="handleClickSignIn" v-if="displaytext==''"> 
-        <span>Sign In</span>
+      <v-btn @click="handleClickSignIn" > 
+        <span>Sign In As Google</span>
       </v-btn>
       <!-- <div style="position: absolute; top: 90px; left: 50%; transform: translateX(-50%); animation: arrow 1s infinite;">
         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
@@ -20,7 +19,7 @@
         </svg>
       </div> -->
     </div>
-    <v-btn @click=" dialog=true" class="mt-5" color="green">Test Here</v-btn>
+    <!-- <v-btn @click=" dialog=true" class="mt-5" color="green">Test Here</v-btn> -->
         <v-dialog v-model="dialog" persistent>
           <v-card>
             <v-card-title>
@@ -84,7 +83,7 @@ export default {
       selectedStudent: '',
       selectedFaculty: '',
       students: ['daniloiii.abelinde@msugensan.edu.ph', 'sharie.colano@msugensan.edu.ph', 'angel.abao@msugensan.edu.ph','jasmine.limjap@msugensan.edu.ph'],
-      faculty: ['jessica.belandres@msugensan.edu.ph', 'ayna.aguja@msugensan.edu.ph', 'katrinajoie.buhian@msugensan.edu.ph','carmelo.guillermo@msugensan.edu.ph'],
+      faculty: ['jessica.belandres@msugensan.edu.ph', 'ammabel.alza@msugensan.edu.ph', 'raquel.campos@msugensan.edu.ph','ederlina.acedo@msugensan.edu.ph'],
       resolve: null
     }
   },  

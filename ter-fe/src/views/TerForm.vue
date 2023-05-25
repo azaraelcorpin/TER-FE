@@ -353,7 +353,7 @@
               </div>
               </v-card>
           </v-col>
-          <v-pagination  v-model="pageNo" :length="4">
+          <v-pagination  v-model="pageNo" :length="(items.length>20)?5:4">
           </v-pagination>
       </v-row>
     <v-row align="center" justify="center">
@@ -475,6 +475,9 @@ export default {
     this.comment = '';  
   },
   computed:{
+        // pageNumb(){
+        //   return this.items
+        // },
         ScholarShipItems() {
           return this.items.slice(0, 9);
         },
