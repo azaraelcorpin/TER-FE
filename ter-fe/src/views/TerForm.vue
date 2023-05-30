@@ -353,7 +353,7 @@
               </div>
               </v-card>
           </v-col>
-          <v-pagination  v-model="pageNo" :length="(items.length>20)?5:4">
+          <v-pagination  v-model="pageNo" :length="(items.length>20)?5:((items.length>15)?4:3)">
           </v-pagination>
       </v-row>
     <v-row align="center" justify="center">

@@ -82,7 +82,17 @@ export const ConstRoutes = [
     //     icon: "mdi-cog",
     //   },
     // ],
-  }
+  },
+  {
+    path: '/howTo',
+    name: 'How To',
+    component: () => import('../views/HowTo.vue'),
+    meta:{
+      title:"How to",
+    },
+    icon: "mdi-comment-question-outline",
+    visible:true,
+  },
 ]
 
 const router = new Router({
