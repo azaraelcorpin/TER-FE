@@ -359,13 +359,13 @@
     <v-row align="center" justify="center">
       <v-col cols="12" md="12">
         <v-card class="pa-8">
-         <span v-if="!showButton" @click="askToGoback()">
+         <span v-if="!showButton && (!['P'].includes(this.$cookies.get('_SID_').eval_type??'X'))" @click="askToGoback()">
           <v-icon>
             mdi-comment
           </v-icon>
             {{ comment }}
          </span>
-          <v-textarea v-else label="Comment:" variant="solo" clearable prepend-inner-icon="mdi-comment" :disabled="!showButton" v-model="comment">
+          <v-textarea v-else-if="!(['P'].includes(this.$cookies.get('_SID_').eval_type??'X'))" label="Comment:" variant="solo" clearable prepend-inner-icon="mdi-comment" :disabled="!showButton" v-model="comment">
           </v-textarea><br/>
           <v-flex class="d-flex justify-center">
             <input type="text" name="tokenHolder" ref="myInputRef" hidden/>

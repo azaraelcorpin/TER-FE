@@ -1,9 +1,10 @@
 <template>
   <v-app id="inspire">
-    <component :is="layout" v-if="isSigned">
+    <component :is="layout" v-if="isSigned && $route.name !== 'How To'">
       <router-view />
     </component>
-    <Login v-else/>
+    <Login v-else-if="$route.name !== 'How To'"/>
+    <HowTo v-else/>
   </v-app>
 </template>
 
@@ -11,6 +12,7 @@
 import Layout from '@/views/layout/Layout.vue';
 import Login from '@/views/LogIn.vue'
 import VueCookies from 'vue-cookies-reactive'
+import HowTo from './views/HowTo.vue';
 Vue.use(VueCookies)
 import Vue from 'vue'
 
@@ -22,6 +24,7 @@ export default {
   components: {
     Layout,
     Login,
+    HowTo,
   },
   computed: {
     layout() {

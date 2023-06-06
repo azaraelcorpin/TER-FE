@@ -2,7 +2,7 @@
   <div class="v-application--wrap">
    <v-app-bar color="#20bfd2" app>
      <v-app-bar-nav-icon style="color:aliceblue" @click="drawer = !drawer"></v-app-bar-nav-icon>
-     <div style="color:black;">Teacher Efficiency Rating Portal</div>
+     <div style="color:black;">Teaching Efficiency Rating Portal</div>
      <v-spacer />
      <div>
      <!-- <v-btn icon large text id="profileAvatar-id">
@@ -43,7 +43,7 @@
          <div v-for="item in ConstRoutes" :key="item.path" link>
 
 
-             <v-list-item v-if="!item.children && item.visible && hasAuth(item.meta.roles)" :to="item.path" ripple="ripple" class="black--text mp-nav-item" active-class="mp-nav-item__active">
+             <v-list-item v-if="!item.children && item.visible && hasAuth(item.meta.roles)" :target="(item.name === 'How To')?'_blank':''" :to="item.path" ripple="ripple" class="black--text mp-nav-item" active-class="mp-nav-item__active">
                  <v-list-item-icon class="layout-drawer__icon">
                      <v-icon>{{item.icon }}</v-icon>
                  </v-list-item-icon>

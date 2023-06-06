@@ -1,12 +1,12 @@
 <template>
-  <div style="background-color:aqua;display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; position: relative;">
+  <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; position: relative;" class="bg">
     <div style=" align-items: center; justify-content: center;position: absolute; top: 20px; font-size: 48px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-weight: bold; color: black;">
       Mindanao State University</div>
       <div  style="position: absolute;margin-bottom: 30%;  font-size: 20px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-weight: bold; color: black;">
-      Junior HighSchool Department
+      Junior High School Department
     </div>
     <div  style="position: absolute;margin-bottom: 20%;  font-size: 20px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-weight: bold; color: black;">
-      TEACHER EFFICIENCY RATING
+      TEACHING EFFICIENCY RATING
     </div>
     <br/>
     <div style="position: relative;">
@@ -50,6 +50,16 @@
     50% { top: 20px; }
     100% { top: 10px; }
   }
+  .bg {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: url( '../assets/bg.jpeg') no-repeat center center;
+    background-size: cover;
+    background-color: rgb(64, 235, 235);
+  }
 </style>
 
 
@@ -73,6 +83,7 @@ export default {
   name: 'LogIn',
   data () {
     return {
+      imageUrl: '../assets/bg.jpeg',
       isInit: false,
       isSignIn: false,
       info:"",
