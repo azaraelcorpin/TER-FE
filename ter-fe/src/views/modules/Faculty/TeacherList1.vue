@@ -4,7 +4,7 @@
         <v-col cols="12"  >
           <v-card>
             <v-card-title>
-              {{($cookies.get('_SID_').position === 'Dean')?'Director':'List of Faculty'}}
+              {{($cookies.get('_SID_').position === 'Dean')?'Director':('List of Faculty '+(($cookies.get('_SID_').position === 'Director')?' (Head)':''))}}
             </v-card-title>
             <v-card-text v-if="!list_loading">
               <v-text-field
@@ -19,7 +19,7 @@
                 :items="teachers" 
                 :search="search"
                 class="elevation-1"
-                :loading="table_loading"
+                :loading="list_loading"
                 loading-text="Loading... Please wait"
               >
               <template v-slot:[`item.validated`]="{ item }">
@@ -29,6 +29,78 @@
                     medium
                     color="green"
                     @click="evaluate(item)"
+                  >
+                    mdi-pencil
+                  </v-icon>
+                  <v-tooltip bottom v-else>
+                <template v-slot:activator="{ on, attrs }">
+                  <v-icon 
+                    medium
+                    color="gray"
+                    v-bind="attrs"
+                        v-on="on"
+                  >
+                  mdi-checkbox-marked-circle
+                  </v-icon>
+                    </template>
+                    <span>Evaluated</span>
+                  </v-tooltip>
+                </div>
+                <v-tooltip bottom v-else>
+                <template v-slot:activator="{ on, attrs }">
+                    <v-icon 
+                        medium
+                        color="red"
+                        v-bind="attrs"
+                        v-on="on"
+                      >
+                      mdi-alert-box
+                      </v-icon>
+                    </template>
+                    <span>No Faculty Assigned</span>
+                  </v-tooltip>
+              </template>
+              </v-data-table>
+            </v-card-text>
+            <v-container fluid v-else style="display: flex; justify-content: center;">
+              <div>
+                <v-progress-circular indeterminate size="90"></v-progress-circular>
+                <div style="text-align: center; margin-top: 10px;">Loading... please wait</div>
+              </div>
+            </v-container>
+
+          </v-card>
+        </v-col>
+      </v-row>
+      <v-row justify="center" v-if="($cookies.get('_SID_').position === 'Director')">
+        <v-col cols="12"  >
+          <v-card>
+            <v-card-title>
+              {{($cookies.get('_SID_').position === 'Dean')?'Director':('List of Faculty '+(($cookies.get('_SID_').position === 'Director')?' (Peer)':''))}}
+            </v-card-title>
+            <v-card-text v-if="!list_loading">
+              <v-text-field
+                v-model="search"
+                append-icon="mdi-magnify"
+                label="Search"
+                single-line
+                hide-details
+              ></v-text-field>              
+              <v-data-table
+                :headers="headers"
+                :items="teachers1" 
+                :search="search"
+                class="elevation-1"
+                :loading="list_loading"
+                loading-text="Loading... Please wait"
+              >
+              <template v-slot:[`item.validated`]="{ item }">
+                <!-- <v-icon medium color="green" > mdi-magnify-plus </v-icon> -->
+                <div v-if="Boolean(item.fullname)">
+                  <v-icon v-if="Boolean(!item.validated)"
+                    medium
+                    color="green"
+                    @click="evaluate(item,'P')"
                   >
                     mdi-pencil
                   </v-icon>
@@ -84,6 +156,7 @@ import API from "@/API/api.js"
     data() {
       return {
         teachers:[],
+        teachers1:[],
         list_loading:true,
         headers: [
         { text: 'Faculty Name', value: 'fullname' },
@@ -119,7 +192,29 @@ import API from "@/API/api.js"
                         })
                     } else {
                         // console.log('lis',JSON.parse(JSON.stringify(response.FacultyList)))
-                        this.teachers = JSON.parse(JSON.stringify(response.FacultyList))
+                        this.teachers = JSON.parse(JSON.stringify(response.FacultyList??response.FacultyList_H))
+                        this.teachers.sort((a, b) => {
+                        // Check if either a or b is validated
+                        const aValidated = a.validated ? true : false;
+                        const bValidated = b.validated ? true : false;
+
+                        // Compare validated status
+                        if (aValidated && !bValidated) {
+                            return 1;
+                        } else if (!aValidated && bValidated) {
+                            return -1;
+                        }
+
+                        // Compare fullname
+                        if (a.fullname > b.fullname) {
+                            return 1;
+                        } else if (a.fullname < b.fullname) {
+                            return -1;
+                        } else {
+                            return 0;
+                        }
+                        });
+                        this.teachers1 = JSON.parse(JSON.stringify(response.FacultyList_P??[]))
                         this.teachers.sort((a, b) => {
                         // Check if either a or b is validated
                         const aValidated = a.validated ? true : false;
@@ -147,8 +242,11 @@ import API from "@/API/api.js"
                     alert(error)
                 } 
         },
-        evaluate(item){
+        evaluate(item,evalType){
+          if(evalType)
+          item.evalType = evalType
           localStorage.setItem('routeParams',JSON.stringify(item))
+          console.log(localStorage.getItem('routeParams'))
           this.$router.push({ name: 'terForm'})
         }
     }

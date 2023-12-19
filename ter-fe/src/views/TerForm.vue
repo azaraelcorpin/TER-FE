@@ -48,7 +48,7 @@
     </v-card>    
     <v-card style="margin-top:10px;" v-if="!loading">
 
-      <v-row v-if="$cookies.get('_SID_').eval_type === 'P'">
+      <v-row v-if="$cookies.get('_SID_').eval_type === 'P' || evaluateeInfo.evalType">
         <v-expansion-panels focusable v-model="panel" :multiple="!showButton">
           <v-expansion-panel>
             <v-expansion-panel-header>
@@ -365,7 +365,7 @@
           </v-icon>
             {{ comment }}
          </span>
-          <v-textarea v-else-if="!(['P'].includes(this.$cookies.get('_SID_').eval_type??'X'))" label="Comment:" variant="solo" clearable prepend-inner-icon="mdi-comment" :disabled="!showButton" v-model="comment">
+          <v-textarea v-else-if="(!['P'].includes(this.$cookies.get('_SID_').eval_type??'X')) && (!['P'].includes(evaluateeInfo.evalType??'X'))" label="Comment:" variant="solo" clearable prepend-inner-icon="mdi-comment" :disabled="!showButton" v-model="comment">
           </v-textarea><br/>
           <v-flex class="d-flex justify-center">
             <input type="text" name="tokenHolder" ref="myInputRef" hidden/>
@@ -473,6 +473,7 @@ export default {
     this.evaluateeInfo = JSON.parse(localStorage.getItem('routeParams'));
     this.queryData();
     this.comment = '';  
+    this.showButton=true;
   },
   computed:{
         // pageNumb(){
@@ -533,6 +534,11 @@ export default {
     },
      submitForm(){      
       // console.log(this.$refs.myInputRef.value); // log the reCAPTCHA response to the console
+      const nullScoreItems = this.items.filter(item => (item.score??'null')==='null');
+      const nullList = nullScoreItems.map(item => item.qstnNumber);
+      if(nullList.length > 0){
+        return;
+      }
       if(this.$refs.myInputRef.value === ''){
         Swal.fire({
           title: 'Requires',
@@ -549,7 +555,7 @@ export default {
                     "facultyId": _evaluatee.facultyid,
                     "subjcode":  _evaluatee.subjcode?.trim(),
                     "section": _evaluatee.section?.trim(),
-                    "evalType": _user.eval_type,
+                    "evalType": this.evaluateeInfo.evalType??_user.eval_type,
                     "sy": _user.sy,
                     "evalid": _user.id,
                     "sem": _user.sem??'0',
@@ -631,7 +637,7 @@ export default {
     async queryData(){
       try {
         this.loading = true;
-                let response = await API.getMyQuestionnaires();
+                let response = await API.getMyQuestionnaires(this.evaluateeInfo.evalType);
                 if (response.error) {
                     console.log(response);                    
                     Swal.fire({

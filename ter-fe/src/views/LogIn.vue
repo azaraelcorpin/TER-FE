@@ -19,7 +19,7 @@
         </svg>
       </div> -->
     </div>
-    <!-- <v-btn @click=" dialog=true" class="mt-5" color="green">Test Here</v-btn> -->
+    <v-btn @click=" dialog=true" class="mt-5" color="green">Test Here</v-btn>
         <v-dialog v-model="dialog" persistent>
           <v-card>
             <v-card-title>
@@ -75,7 +75,7 @@
 * 
 */
 // import GAuth from 'vue-google-oauth2'
-import Vue from 'vue';
+// import Vue from 'vue';
 import API from "@/API/api.js"
 import Swal from 'sweetalert2'
 
@@ -93,7 +93,7 @@ export default {
       selectedRole: '',
       selectedStudent: '',
       selectedFaculty: '',
-      students: ['daniloiii.abelinde@msugensan.edu.ph', 'sharie.colano@msugensan.edu.ph', 'angel.abao@msugensan.edu.ph','jasmine.limjap@msugensan.edu.ph'],
+      students: ['daniloiii.abelinde@msugensan.edu.ph', 'clark.apellado@msugensan.edu.ph', 'angel.abao@msugensan.edu.ph','jasmine.limjap@msugensan.edu.ph'],
       faculty: ['jessica.belandres@msugensan.edu.ph', 'ammabel.alza@msugensan.edu.ph', 'raquel.campos@msugensan.edu.ph','ederlina.acedo@msugensan.edu.ph'],
       resolve: null
     }
@@ -122,11 +122,11 @@ export default {
         let currentUserProfile = googleUser.getBasicProfile();
         
 
-          const response = await Vue.axios.get('https://people.googleapis.com/v1/people/'+currentUserProfile.getId()
-            +'?personFields=photos&key='+process.env.VUE_APP_GOOGLE_API_KEY);
+          // const response = await Vue.axios.get('https://people.googleapis.com/v1/people/'+currentUserProfile.getId()
+          //   +'?personFields=photos&key='+process.env.VUE_APP_GOOGLE_API_KEY);
 
-        //   // console.log(response.data.photos[0].url);
-          let profilePicUrl = (response.data.photos[0].url).split("=", 1)[0];  
+         console.log(currentUserProfile.getImageUrl());
+          let profilePicUrl = currentUserProfile.getImageUrl();  
           let userName = currentUserProfile.getName();
           // this.globalStore.userEmail = currentUserProfile.getEmail();  
           let userEmail =currentUserProfile.getEmail();// 'mariatheresa.pelones@msugensan.edu.ph' //'azelamaye.arbilo@msugensan.edu.ph'; sample email currentUserProfile.getEmail();

@@ -18,6 +18,7 @@
                 :items="items" 
                 class="elevation-1"
                 hide-default-footer
+                :items-per-page = -1
                 :loading="table_loading"
                 loading-text="Loading... Please wait"
               >

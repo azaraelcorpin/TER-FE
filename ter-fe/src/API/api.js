@@ -179,11 +179,11 @@ export default{
     }
   },
 
-  async getMyQuestionnaires() {
+  async getMyQuestionnaires(evalType) {
     var url = `${process.env.VUE_APP_TER_API_URL}/questionnaire/getItemsTypeAndSy`
     const config =await this.getAuthorization();
     const body = {
-      "eval_type":Vue.$cookies.get('_SID_').eval_type
+      "eval_type":evalType??Vue.$cookies.get('_SID_').eval_type??"S"
       }
     let response = null
     try {
@@ -216,8 +216,8 @@ export default{
         return { error: "Sorry. Error on checking account." };
       }
     } catch (error) {
-      console.log(error.response);
-      return { error: error.response.data.message }
+      console.log(error.response.data);
+      return { error: error.response }
     }
   },
 
