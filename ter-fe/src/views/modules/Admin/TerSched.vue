@@ -145,6 +145,14 @@ export default{
           value: "date_end",
         },
         {
+          text: "sem",
+          value: "sem",
+        },
+        {
+          text: "department",
+          value: "department",
+        },                
+        {
           text: "Status",
           value: "status",
         },        

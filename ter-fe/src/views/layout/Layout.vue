@@ -34,7 +34,7 @@
          <v-list-item-subtitle> Powered By</v-list-item-subtitle> -->
          <div class="logo-holder logo">
            <h3>MSU GSC</h3>
-           <p>High School Department</p>
+           <p>Senior High School Department</p>
          </div>
        </v-list-item-content>
      </v-list-item>

@@ -3,7 +3,7 @@
           <v-card>
             <v-card>
               <div class="Hcontainer">
-                <div class="item"><strong>Student ID:</strong>&nbsp;{{$cookies.get('_SID_').id}}</div>
+                <div class="item"><strong>Student's TER ID:</strong>&nbsp;{{$cookies.get('_SID_').id}}</div>
                 <div class="item"><strong>Section:</strong>&nbsp;{{$cookies.get('_SID_').section}}</div>
                 <div class="item"><strong>Name:</strong>&nbsp;{{$cookies.get('_SID_').userName}}</div>                
                 <div class="item"><strong>Year Level:</strong>&nbsp;{{$cookies.get('_SID_').yearlevel}}</div>
@@ -77,9 +77,9 @@ import API from "@/API/api.js"
         items:[],
         headers: [
         { text: 'Subject Code', value: 'subjcode' },
-        { text: 'Days', value: 'days' },
+        // { text: 'Days', value: 'days' },
         { text: 'Section', value: 'section' },
-        { text: 'Time', value: 'time' },
+        { text: 'Day and Time', value: 'schedule' },
         { text: 'Faculty', value: 'fullname' },
         { text: 'Room', value: 'room' },
         { text: 'Rate', value: 'validated',  },

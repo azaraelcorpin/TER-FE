@@ -27,7 +27,7 @@
             </v-card-title>
             <v-card-text>
               <v-radio-group v-model="selectedRole" inline>
-                <v-radio value="dean" label="As Dean"></v-radio>
+                <v-radio value="academic_head" label="As academic_head"></v-radio>
                 <v-radio value="director" label="As Director"></v-radio>
                 <v-radio value="faculty" label="As Faculty"></v-radio>
                 <v-radio value="student" label="As Student"></v-radio>
@@ -93,8 +93,8 @@ export default {
       selectedRole: '',
       selectedStudent: '',
       selectedFaculty: '',
-      students: ['daniloiii.abelinde@msugensan.edu.ph', 'clark.apellado@msugensan.edu.ph', 'angel.abao@msugensan.edu.ph','jasmine.limjap@msugensan.edu.ph'],
-      faculty: ['jessica.belandres@msugensan.edu.ph', 'ammabel.alza@msugensan.edu.ph', 'raquel.campos@msugensan.edu.ph','ederlina.acedo@msugensan.edu.ph'],
+      students: ['princearjen.gabato@msugensan.edu.ph', 'clark.apellado@msugensan.edu.ph', 'angel.abao@msugensan.edu.ph','jasmine.limjap@msugensan.edu.ph'],
+      faculty: ['jessica.aban@msugensan.edu.ph', 'abdul.silongan@msugensan.edu.ph', 'raquel.campos@msugensan.edu.ph','ederlina.acedo@msugensan.edu.ph'],
       resolve: null
     }
   },  
@@ -125,7 +125,7 @@ export default {
           // const response = await Vue.axios.get('https://people.googleapis.com/v1/people/'+currentUserProfile.getId()
           //   +'?personFields=photos&key='+process.env.VUE_APP_GOOGLE_API_KEY);
 
-         console.log(currentUserProfile.getImageUrl());
+         console.log('test',currentUserProfile.getName());
           let profilePicUrl = currentUserProfile.getImageUrl();  
           let userName = currentUserProfile.getName();
           // this.globalStore.userEmail = currentUserProfile.getEmail();  
@@ -180,8 +180,8 @@ export default {
         let userEmail=''
 
         
-          if(this.selectedRole === 'dean'){userEmail = 'mariatheresa.pelones@msugensan.edu.ph';}
-          else if(this.selectedRole === 'director'){ userEmail = 'esmaida.andang@msugensan.edu.ph';}
+          if(this.selectedRole === 'academic_head'){userEmail = 'margie.quimosing@msugensan.edu.ph';}
+          else if(this.selectedRole === 'director'){ userEmail = 'jean.bergante@msugensan.edu.ph';}
           else if(this.selectedRole === 'faculty') {userEmail = this.selectedFaculty;}
           else if(this.selectedRole === 'student'){ userEmail = this.selectedStudent;}
 
@@ -202,8 +202,9 @@ export default {
                     })
                 } else {
                   // response.user.profilePicUrl = profilePicUrl;
-                  response.user.userName = userEmail;
+                  response.user.userName = response.user.userName??userEmail;
                   this.$cookies.set('_SID_',JSON.stringify(response.user),'1d');
+                  console.log('test',JSON.stringify(response.user))
                   localStorage.removeItem('logOut')
                   try{this.$router.push({ name: 'Dashboard'})
                   }catch(e){
