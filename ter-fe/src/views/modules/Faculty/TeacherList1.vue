@@ -4,7 +4,7 @@
         <v-col cols="12"  >
           <v-card>
             <v-card-title>
-              {{($cookies.get('_SID_').position === 'Dean')?'Director':('List of Faculty '+(($cookies.get('_SID_').position === 'Director')?' (Head)':''))}}
+              {{('List of Faculty '+((['Academic Head','Director'].includes($cookies.get('_SID_').position))?' (As Head)':'(As Peer)'))}}
             </v-card-title>
             <v-card-text v-if="!list_loading">
               <v-text-field
@@ -25,14 +25,14 @@
               <template v-slot:[`item.validated`]="{ item }">
                 <!-- <v-icon medium color="green" > mdi-magnify-plus </v-icon> -->
                 <div v-if="Boolean(item.fullname)">
-                  <v-icon v-if="Boolean(!item.validated)"
+                  <v-icon v-if="Boolean(!item.validated) && item.designation !== 'Study Leave'"
                     medium
                     color="green"
                     @click="evaluate(item)"
                   >
                     mdi-pencil
                   </v-icon>
-                  <v-tooltip bottom v-else>
+                  <v-tooltip bottom v-else-if="item.designation === 'Study Leave'">
                 <template v-slot:activator="{ on, attrs }">
                   <v-icon 
                     medium
@@ -43,8 +43,105 @@
                   mdi-checkbox-marked-circle
                   </v-icon>
                     </template>
-                    <span>Evaluated</span>
+                    <span>No TER</span>
                   </v-tooltip>
+                  <v-tooltip bottom v-else>
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-icon 
+                        medium
+                        color="gray"
+                        v-bind="attrs"
+                            v-on="on"
+                      >
+                      mdi-checkbox-marked-circle
+                      </v-icon>
+                        </template>
+                        <span>Evaluated</span>
+                      </v-tooltip>
+                </div>
+                <v-tooltip bottom v-else>
+                <template v-slot:activator="{ on, attrs }">
+                    <v-icon 
+                        medium
+                        color="red"
+                        v-bind="attrs"
+                        v-on="on"
+                      >
+                      mdi-alert-box
+                      </v-icon>
+                    </template>
+                    <span>No Faculty Assigned</span>
+                  </v-tooltip>
+              </template>
+              </v-data-table>
+            </v-card-text>
+            <v-container fluid v-else style="display: flex; justify-content: center;">
+              <div>
+                <v-progress-circular indeterminate size="90"></v-progress-circular>
+                <div style="text-align: center; margin-top: 10px;">Loading... please wait</div>
+              </div>
+            </v-container>
+          </v-card>
+        </v-col>
+      </v-row>
+      <v-row justify="center" v-if="(['Academic Head','Director'].includes($cookies.get('_SID_').position))">
+        <v-col cols="12"  >
+          <v-card>
+            <v-card-title>
+              {{'List of Faculty (As Peer)'}}
+            </v-card-title>
+            <v-card-text v-if="!list_loading">
+              <v-text-field
+                v-model="search"
+                append-icon="mdi-magnify"
+                label="Search"
+                single-line
+                hide-details
+              ></v-text-field>              
+              <v-data-table
+                :headers="headers"
+                :items="teachers1" 
+                :search="search"
+                class="elevation-1"
+                :loading="list_loading"
+                loading-text="Loading... Please wait"
+              >
+              <template v-slot:[`item.validated`]="{ item }">
+                <!-- <v-icon medium color="green" > mdi-magnify-plus </v-icon> -->
+                <div v-if="Boolean(item.fullname)">
+                  <v-icon v-if="Boolean(!item.validated) && item.designation !== 'Study Leave'"
+                    medium
+                    color="green"
+                    @click="evaluate(item)"
+                  >
+                    mdi-pencil
+                  </v-icon>
+                  <v-tooltip bottom v-else-if="item.designation === 'Study Leave'">
+                <template v-slot:activator="{ on, attrs }">
+                  <v-icon 
+                    medium
+                    color="gray"
+                    v-bind="attrs"
+                        v-on="on"
+                  >
+                  mdi-checkbox-marked-circle
+                  </v-icon>
+                    </template>
+                    <span>No TER</span>
+                  </v-tooltip>
+                  <v-tooltip bottom v-else>
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-icon 
+                        medium
+                        color="gray"
+                        v-bind="attrs"
+                            v-on="on"
+                      >
+                      mdi-checkbox-marked-circle
+                      </v-icon>
+                        </template>
+                        <span>Evaluated</span>
+                      </v-tooltip>
                 </div>
                 <v-tooltip bottom v-else>
                 <template v-slot:activator="{ on, attrs }">
@@ -89,6 +186,8 @@ import API from "@/API/api.js"
         headers: [
         { text: 'Faculty Name', value: 'fullname' },
         { text: 'Email Address', value: 'emailaddress' },
+        { text: 'Position', value: 'position',  },
+        { text: 'Designation', value: 'designation',  },
         { text: 'Rate', value: 'validated',  },
       ],
       search:'',
@@ -143,7 +242,7 @@ import API from "@/API/api.js"
                         }
                         });
                         this.teachers1 = JSON.parse(JSON.stringify(response.FacultyList_P??[]))
-                        this.teachers.sort((a, b) => {
+                        this.teachers1.sort((a, b) => {
                         // Check if either a or b is validated
                         const aValidated = a.validated ? true : false;
                         const bValidated = b.validated ? true : false;

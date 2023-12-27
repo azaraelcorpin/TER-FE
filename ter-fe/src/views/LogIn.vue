@@ -3,7 +3,7 @@
     <div style=" align-items: center; justify-content: center;position: absolute; top: 20px; font-size: 48px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-weight: bold; color: black;">
       Mindanao State University</div>
       <div  style="position: absolute;margin-bottom: 30%;  font-size: 20px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-weight: bold; color: black;">
-      Junior High School Department
+      Senior High School Department
     </div>
     <div  style="position: absolute;margin-bottom: 20%;  font-size: 20px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-weight: bold; color: black;">
       TEACHING EFFICIENCY RATING
@@ -94,7 +94,7 @@ export default {
       selectedStudent: '',
       selectedFaculty: '',
       students: ['princearjen.gabato@msugensan.edu.ph', 'clark.apellado@msugensan.edu.ph', 'angel.abao@msugensan.edu.ph','jasmine.limjap@msugensan.edu.ph'],
-      faculty: ['jessica.aban@msugensan.edu.ph', 'abdul.silongan@msugensan.edu.ph', 'raquel.campos@msugensan.edu.ph','ederlina.acedo@msugensan.edu.ph'],
+      faculty: ['jessica.aban@msugensan.edu.ph', 'abdul.silongan@msugensan.edu.ph', 'irene.bernadas@msugensan.edu.ph','ederlina.acedo@msugensan.edu.ph'],
       resolve: null
     }
   },  
