@@ -1,15 +1,16 @@
 <template>
   <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; position: relative;" class="bg">
-    <div style=" align-items: center; justify-content: center;position: absolute; top: 20px; font-size: 48px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-weight: bold; color: black;">
-      Mindanao State University</div>
+    <div style="text-shadow: -2px -2px 0 black, 2px -2px 0 black, -2px 2px 0 black, 2px 2px 0 black;justify-content: center; text-align: end; position: absolute; top: 20px; font-size: 48px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-weight: bold; color: #ffffff;">
+      Mindanao State University
+    </div>
       <div  style="position: absolute;margin-bottom: 30%;  font-size: 20px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-weight: bold; color: black;">
       Senior High School Department
     </div>
-    <div  style="position: absolute;margin-bottom: 20%;  font-size: 20px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-weight: bold; color: black;">
+    <div  style="position: absolute;margin-bottom: 15%;  font-size: 22px;text-decoration: underline; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-weight: bold; color:#137272;">
       TEACHING EFFICIENCY RATING
     </div>
     <br/>
-    <div style="position: relative;">
+    <div style="position: absolute;margin-bottom: -10%;">
       <v-btn @click="handleClickSignIn" > 
         <span>Sign In As Google</span>
       </v-btn>
@@ -188,7 +189,7 @@ export default {
         if(userEmail === '')
         return;
       console.log('1',userEmail)
-        try {
+        try { 
                 let response = await API.checkAccount(userEmail);
                 console.log('2',response)
                 if (response.error) {

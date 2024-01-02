@@ -197,6 +197,7 @@ export default {
           this.$cookies.remove('_SID_');
         } catch (error) {
           // On fail do something
+          this.$cookies.remove('_SID_');
           console.error(error);
         }
      },
@@ -222,6 +223,7 @@ export default {
  font-weight: 400;
  font-size: 50px;
  line-height:1.3;
+ -webkit-text-stroke: 2px ;
 }
 .logo p {
  font-size: 12px;

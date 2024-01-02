@@ -112,7 +112,7 @@
                   <v-icon v-if="Boolean(!item.validated) && item.designation !== 'Study Leave'"
                     medium
                     color="green"
-                    @click="evaluate(item)"
+                    @click="evaluate(item,'P')"
                   >
                     mdi-pencil
                   </v-icon>

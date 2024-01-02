@@ -6,7 +6,7 @@
       <div class="Hcontainer">
         <div class="item"><strong>Faculty:</strong>&nbsp;{{ evaluateeInfo.fullname }}</div>
         <div class="item"><strong>Subject:</strong>&nbsp;{{evaluateeInfo.subjcode??'N/A'}}</div>
-        <div class="item"><strong>Time/Day:</strong>&nbsp;{{evaluateeInfo.time??'N/A'}}&nbsp;{{ evaluateeInfo.days }}</div>
+        <div class="item"><strong>Time/Day:</strong>&nbsp;{{evaluateeInfo.schedule??'N/A'}}</div>
         <div class="item"><strong>Section:</strong>&nbsp;{{evaluateeInfo.section??'N/A'}}</div>
       </div>
       <i><strong>Direction:</strong> Please answer all question carefully. Choose the approriate number which corresponds to your honest evaluation.<br>
