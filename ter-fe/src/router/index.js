@@ -86,7 +86,7 @@ export const ConstRoutes = [
   {
     path: '/howTo',
     name: 'How To',
-    component: () => window.location.href = 'https://sites.google.com/msugensan.edu.ph/jhsterguide/home?fbclid=IwAR3jWnCt42B3rh0QzRaUmJe_diBzsmv6OxzUOxbE2SJb7_U8EhqCPiWOJYU',
+    component: () => window.location.href = 'https://sites.google.com/msugensan.edu.ph/shsterguide',
     meta:{
       title:"How to",
     },
