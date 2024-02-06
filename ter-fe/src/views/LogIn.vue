@@ -20,7 +20,7 @@
         </svg>
       </div> -->
     </div>
-    <!-- <v-btn @click=" dialog=true" class="mt-5" color="green">Test Here</v-btn> -->
+    <v-btn @click=" dialog=true" class="mt-5" color="green">Test Here</v-btn>
         <v-dialog v-model="dialog" persistent>
           <v-card>
             <v-card-title>
@@ -94,7 +94,7 @@ export default {
       selectedRole: '',
       selectedStudent: '',
       selectedFaculty: '',
-      students: ['princearjen.gabato@msugensan.edu.ph', 'clark.apellado@msugensan.edu.ph', 'salma.maningcara@msugensan.edu.ph','jasmine.limjap@msugensan.edu.ph'],
+      students: ['princearjen.gabato@msugensan.edu.ph', 'juliannesimoun.bizmawi@msugensan.edu.ph', 'salma.maningcara@msugensan.edu.ph','jasmine.limjap@msugensan.edu.ph'],
       faculty: ['jessica.aban@msugensan.edu.ph', 'abdul.silongan@msugensan.edu.ph', 'irene.bernadas@msugensan.edu.ph','daryl.valdez@msugensan.edu.ph'],
       resolve: null
     }
