@@ -4,7 +4,7 @@
       Mindanao State University
     </div>
       <div  style="position: absolute;margin-bottom: 30%;  font-size: 20px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-weight: bold; color: black;">
-      Senior High School Department
+        Junior High School Department
     </div>
     <div  style="position: absolute;margin-bottom: 15%;  font-size: 22px;text-decoration: underline; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-weight: bold; color:#137272;">
       TEACHING EFFICIENCY RATING
@@ -28,7 +28,7 @@
             </v-card-title>
             <v-card-text>
               <v-radio-group v-model="selectedRole" inline>
-                <v-radio value="academic_head" label="As academic_head"></v-radio>
+                <v-radio value="dean" label="Dean"></v-radio>
                 <v-radio value="director" label="As Director"></v-radio>
                 <v-radio value="faculty" label="As Faculty"></v-radio>
                 <v-radio value="student" label="As Student"></v-radio>
@@ -94,8 +94,8 @@ export default {
       selectedRole: '',
       selectedStudent: '',
       selectedFaculty: '',
-      students: ['princearjen.gabato@msugensan.edu.ph', 'juliannesimoun.bizmawi@msugensan.edu.ph', 'salma.maningcara@msugensan.edu.ph','jasmine.limjap@msugensan.edu.ph'],
-      faculty: ['jessica.aban@msugensan.edu.ph', 'abdul.silongan@msugensan.edu.ph', 'irene.bernadas@msugensan.edu.ph','daryl.valdez@msugensan.edu.ph'],
+      students: ['najiha.musa@msugensan.edu.ph', 'shairafatma.ismael@msugensan.edu.ph', 'salma.maningcara@msugensan.edu.ph','jasmine.limjap@msugensan.edu.ph'],
+      faculty: ['jinky.bibat@msugensan.edu.ph', 'jinky.bibat@msugensan.edu.ph', 'irene.bernadas@msugensan.edu.ph','daryl.valdez@msugensan.edu.ph'],
       resolve: null
     }
   },  
@@ -170,7 +170,7 @@ export default {
           this.isSignIn = this.$gAuth.isAuthorized
       } catch (error) {
         // On fail do something
-        console.error(error);
+        console.error(error); 
         return null;
       }
     },
@@ -181,8 +181,8 @@ export default {
         let userEmail=''
 
         
-          if(this.selectedRole === 'academic_head'){userEmail = 'margie.quimosing@msugensan.edu.ph';}
-          else if(this.selectedRole === 'director'){ userEmail = 'jean.bergante@msugensan.edu.ph';}
+          if(this.selectedRole === 'dean'){userEmail = 'mariatheresa.pelones@msugensan.edu.ph';}
+          else if(this.selectedRole === 'director'){ userEmail = 'renante.magoncia@msugensan.edu.ph';}
           else if(this.selectedRole === 'faculty') {userEmail = this.selectedFaculty;}
           else if(this.selectedRole === 'student'){ userEmail = this.selectedStudent;}
 

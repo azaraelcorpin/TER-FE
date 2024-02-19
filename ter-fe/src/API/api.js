@@ -38,7 +38,11 @@ export default{
   ///// start leave type
   async checkAccount(userEmail) {
     var url = `${process.env.VUE_APP_TER_API_URL}/checkAccount`
-    const config = await this.getAuthorization({userEmail});
+    var auth = {
+      userEmail:userEmail,
+      department:'cetd'
+    }
+    const config = await this.getAuthorization(auth);
     const body = { }
     try {
       const response = await Vue.axios.post(url, body, config);
