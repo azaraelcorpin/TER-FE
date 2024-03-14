@@ -1,5 +1,5 @@
-<template>
-  <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; position: relative;" class="bg">
+<template >
+  <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; position: relative;" class="bg" >
     <div style="text-shadow: -2px -2px 0 black, 2px -2px 0 black, -2px 2px 0 black, 2px 2px 0 black;justify-content: center; text-align: end; position: absolute; top: 20px; font-size: 48px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-weight: bold; color: #ffffff;">
       Mindanao State University
     </div>
@@ -42,6 +42,9 @@
             </v-card-actions>
           </v-card>
         </v-dialog>
+    <div style="position: absolute;right: 0;bottom: 0;padding: 2px;font-size: x-small;">
+      {{version}}
+    </div>
   </div>
 </template>
 
@@ -96,7 +99,8 @@ export default {
       selectedFaculty: '',
       students: ['najiha.musa@msugensan.edu.ph', 'shairafatma.ismael@msugensan.edu.ph', 'salma.maningcara@msugensan.edu.ph','jasmine.limjap@msugensan.edu.ph'],
       faculty: ['jinky.bibat@msugensan.edu.ph', 'jinky.bibat@msugensan.edu.ph', 'irene.bernadas@msugensan.edu.ph','daryl.valdez@msugensan.edu.ph'],
-      resolve: null
+      resolve: null,
+      version: process.env.VUE_APP_NAME_VERSION
     }
   },  
 

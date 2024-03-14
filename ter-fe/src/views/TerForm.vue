@@ -1,6 +1,6 @@
 <template>
   <v-container fluid>
-  <v-card style="overflow-y: scroll;height: 90vh;overflow-x: hidden; position: relative;" >
+  <v-card style="overflow-y: scroll;height: 90vh;overflow-x: hidden; position: relative;" ref="itemer">
     <div ref="terForm"></div>
     <v-card style="position: sticky;top: 0;z-index: 4;"> 
       <div class="Hcontainer">
@@ -45,10 +45,254 @@
         </v-row>
       </v-col>
       </v-row>
-    </v-card>    
-    <v-card style="margin-top:10px;" v-if="!loading">
 
-      <v-row v-if="$cookies.get('_SID_').eval_type === 'P' || evaluateeInfo.evalType">
+      <v-tabs style="margin-top: 10px;" v-if="$cookies.get('_SID_').eval_type === 'P' || evaluateeInfo.evalType"
+          v-model="tab"
+          background-color="transparent"
+          color="black"
+          grow
+          class="custom-tabs"
+          @change="scrollToTop"
+        >
+        <v-tabs-slider color="cyan"></v-tabs-slider>
+          <v-tab :key=0>
+            Scholarship
+          </v-tab>
+          <v-tab :key=1 >
+            Personality
+          </v-tab>
+          <v-tab :key=2 >
+            Commitment and dedication to Service
+          </v-tab>
+      </v-tabs>
+    </v-card>    
+    <v-card style="margin-top:10px;" v-if="!loading" >
+
+      <v-row justify="center" v-if="$cookies.get('_SID_').eval_type === 'P' || evaluateeInfo.evalType" >
+        <v-tabs-items v-model="tab" >
+          <v-tab-item :key=0>
+          <v-row>
+              <v-col v-for="(item)  in ScholarShipItems" :key="item.qstnNumber" :cols="showButton?'12':'6'" >
+                  <v-card  style="margin-bottom: 10px;" >
+                  <div  style="display: flex; justify-content: center;">           
+                    <v-col cols="10" :style="{ color: itemTextColor(item) }">
+                      {{item.qstnNumber}} . &nbsp; {{ item.question }}
+                  <v-row class="my-5" >  
+                    <v-col cols="2" v-if="showButton || ( (item.score??-1) === 5 )">
+                      <v-btn 
+                        block
+                        :color="( (item.score??-1) !== 5 )?'secondary':'primary'"
+                        @click="showButton? toggleScore(5,item.qstnNumber-1):askToGoback()"
+                      >
+                        5
+                      </v-btn>
+                    </v-col>    
+                    <v-col cols="2" v-if="showButton || ( (item.score??-1) === 6 )">
+                      <v-btn 
+                        block
+                        :color="( (item.score??-1) !== 6 )?'secondary':'primary'"
+                        @click="showButton? toggleScore(6,item.qstnNumber-1):askToGoback()"
+                      >
+                        6
+                      </v-btn>
+                    </v-col>
+                    <v-col cols="2" v-if="showButton || ( (item.score??-1) === 7 )">
+                      <v-btn 
+                        block
+                        :color="( (item.score??-1) !== 7 )?'secondary':'primary'"
+                        @click="showButton? toggleScore(7,item.qstnNumber-1):askToGoback()"
+                      >
+                        7
+                      </v-btn>
+                    </v-col>
+                    <v-col cols="2" v-if="showButton || ( (item.score??-1) === 8 )">
+                      <v-btn 
+                        block
+                        :color="( (item.score??-1) !== 8 )?'secondary':'primary'"
+                        @click="showButton? toggleScore(8,item.qstnNumber-1):askToGoback()"
+                      >
+                        8
+                      </v-btn>
+                    </v-col>
+                    <v-col cols="2" v-if="showButton || ( (item.score??-1) === 9 )">
+                      <v-btn 
+                        block
+                        :color="( (item.score??-1) !== 9 )?'secondary':'primary'"
+                        @click="showButton? toggleScore(9,item.qstnNumber-1):askToGoback()"
+                      >
+                        9
+                      </v-btn>
+                    </v-col>
+                    <v-col cols="2" v-if="showButton || ( (item.score??-1) === 10 )">
+                      <v-btn 
+                        block
+                        :color="( (item.score??-1) !== 10 )?'secondary':'primary'"
+                        @click="showButton? toggleScore(10,item.qstnNumber-1):askToGoback()"
+                      >
+                        10
+                      </v-btn>
+                    </v-col>
+                  </v-row>
+                  
+                    </v-col>
+                  </div>
+                  </v-card>
+              </v-col>
+            </v-row>
+          </v-tab-item>
+
+          <v-tab-item :key=1>
+            <v-row >
+                  <v-col v-for="(item)  in PersonalityItems" :key="item.qstnNumber" :cols="showButton?'12':'6'">
+                      <v-card  style="margin-bottom: 10px;" >
+                      <div  style="display: flex; justify-content: center;">           
+                        <v-col cols="10" :style="{ color: itemTextColor(item) }">
+                          {{item.qstnNumber}} . &nbsp; {{ item.question }}
+                      <v-row class="my-5" >  
+                        <v-col cols="2" v-if="showButton || ( (item.score??-1) === 5 )">
+                          <v-btn 
+                            block
+                            :color="( (item.score??-1) !== 5 )?'secondary':'primary'"
+                            @click="showButton? toggleScore(5,item.qstnNumber-1):askToGoback()"
+                          >
+                            5
+                          </v-btn>
+                        </v-col>    
+                        <v-col cols="2" v-if="showButton || ( (item.score??-1) === 6 )">
+                          <v-btn 
+                            block
+                            :color="( (item.score??-1) !== 6 )?'secondary':'primary'"
+                            @click="showButton? toggleScore(6,item.qstnNumber-1):askToGoback()"
+                          >
+                            6
+                          </v-btn>
+                        </v-col>
+                        <v-col cols="2" v-if="showButton || ( (item.score??-1) === 7 )">
+                          <v-btn 
+                            block
+                            :color="( (item.score??-1) !== 7 )?'secondary':'primary'"
+                            @click="showButton? toggleScore(7,item.qstnNumber-1):askToGoback()"
+                          >
+                            7
+                          </v-btn>
+                        </v-col>
+                        <v-col cols="2" v-if="showButton || ( (item.score??-1) === 8 )">
+                          <v-btn 
+                            block
+                            :color="( (item.score??-1) !== 8 )?'secondary':'primary'"
+                            @click="showButton? toggleScore(8,item.qstnNumber-1):askToGoback()"
+                          >
+                            8
+                          </v-btn>
+                        </v-col>
+                        <v-col cols="2" v-if="showButton || ( (item.score??-1) === 9 )">
+                          <v-btn 
+                            block
+                            :color="( (item.score??-1) !== 9 )?'secondary':'primary'"
+                            @click="showButton? toggleScore(9,item.qstnNumber-1):askToGoback()"
+                          >
+                            9
+                          </v-btn>
+                        </v-col>
+                        <v-col cols="2" v-if="showButton || ( (item.score??-1) === 10 )">
+                          <v-btn 
+                            block
+                            :color="( (item.score??-1) !== 10 )?'secondary':'primary'"
+                            @click="showButton? toggleScore(10,item.qstnNumber-1):askToGoback()"
+                          >
+                            10
+                          </v-btn>
+                        </v-col>
+                      </v-row>
+                      
+                        </v-col>
+                      </div>
+                      </v-card>
+                  </v-col>
+                </v-row>  
+          </v-tab-item>
+
+          <v-tab-item :key=2>
+            <v-row>
+                  <v-col v-for="(item)  in commitmentItems" :key="item.qstnNumber" :cols="showButton?'12':'6'">
+                      <v-card  style="margin-bottom: 10px;" >
+                      <div  style="display: flex; justify-content: center;">           
+                        <v-col cols="10" :style="{ color: itemTextColor(item) }">
+                          {{item.qstnNumber}} . &nbsp; {{ item.question }}
+                      <v-row class="my-5" >  
+                        <v-col cols="2" v-if="showButton || ( (item.score??-1) === 5 )">
+                          <v-btn 
+                            block
+                            :color="( (item.score??-1) !== 5 )?'secondary':'primary'"
+                            @click="showButton? toggleScore(5,item.qstnNumber-1):askToGoback()"
+                          >
+                            5
+                          </v-btn>
+                        </v-col>    
+                        <v-col cols="2" v-if="showButton || ( (item.score??-1) === 6 )">
+                          <v-btn 
+                            block
+                            :color="( (item.score??-1) !== 6 )?'secondary':'primary'"
+                            @click="showButton? toggleScore(6,item.qstnNumber-1):askToGoback()"
+                          >
+                            6
+                          </v-btn>
+                        </v-col>
+                        <v-col cols="2" v-if="showButton || ( (item.score??-1) === 7 )">
+                          <v-btn 
+                            block
+                            :color="( (item.score??-1) !== 7 )?'secondary':'primary'"
+                            @click="showButton? toggleScore(7,item.qstnNumber-1):askToGoback()"
+                          >
+                            7
+                          </v-btn>
+                        </v-col>
+                        <v-col cols="2" v-if="showButton || ( (item.score??-1) === 8 )">
+                          <v-btn 
+                            block
+                            :color="( (item.score??-1) !== 8 )?'secondary':'primary'"
+                            @click="showButton? toggleScore(8,item.qstnNumber-1):askToGoback()"
+                          >
+                            8
+                          </v-btn>
+                        </v-col>
+                        <v-col cols="2" v-if="showButton || ( (item.score??-1) === 9 )">
+                          <v-btn 
+                            block
+                            :color="( (item.score??-1) !== 9 )?'secondary':'primary'"
+                            @click="showButton? toggleScore(9,item.qstnNumber-1):askToGoback()"
+                          >
+                            9
+                          </v-btn>
+                        </v-col>
+                        <v-col cols="2" v-if="showButton || ( (item.score??-1) === 10 )">
+                          <v-btn 
+                            block
+                            :color="( (item.score??-1) !== 10 )?'secondary':'primary'"
+                            @click="showButton? toggleScore(10,item.qstnNumber-1):askToGoback()"
+                          >
+                            10
+                          </v-btn>
+                        </v-col>
+                      </v-row>
+                      
+                        </v-col>
+                      </div>
+                      </v-card>
+                  </v-col>
+                </v-row>
+          </v-tab-item>
+        </v-tabs-items>
+        <div>
+          <v-icon @click="tab=tab-1" @mouseup="scrollToTop" :disabled="tab===0">
+            mdi-arrow-left-bold-circle-outline
+          </v-icon>
+          <v-icon @click="tab=tab+1" @mouseup="scrollToTop" :disabled="tab===2">
+            mdi-arrow-right-bold-circle-outline
+          </v-icon>
+        </div>          
+        
+<!-- 
         <v-expansion-panels focusable v-model="panel" :multiple="!showButton">
           <v-expansion-panel>
             <v-expansion-panel-header>
@@ -278,6 +522,7 @@
             </v-expansion-panel-content>
           </v-expansion-panel>                    
         </v-expansion-panels>
+  -->     
       </v-row>
       <v-row justify="center" v-else >
 
@@ -462,6 +707,7 @@ export default {
       nullScoreList:[],
       panel:[],
       pageNo:1,
+      tab:0,
     }
   },
   created(){ 
@@ -474,6 +720,7 @@ export default {
     this.queryData();
     this.comment = '';  
     this.showButton=true;
+    this.pageNo=1;
   },
   computed:{
         // pageNumb(){
@@ -597,7 +844,9 @@ export default {
     },
     scrollToTop() {
       this.$refs.terForm.scrollIntoView({behavior:'smooth'})
-    },    
+      if(Vue.$cookies.get('_SID_').eval_type === 'P')
+      this.$refs.itemer.$el.scrollTop = 0; 
+    },  
     askToGoback() {
     Swal.fire({
       title: 'Do you want to change your choices?',
@@ -695,7 +944,22 @@ export default {
         }
         
       this.showButton = !this.showButton;this.showDialogReviewScore();
-    }
+    },
+    // handleTabChange() {
+    //   // Ensure the DOM updates have been processed
+    //   this.$nextTick(() => {
+    //     const contentContainers = this.$refs.contentContainer;
+    //     console.log('test',contentContainers)
+    //     if (contentContainers && contentContainers.length > 0) {
+    //       // Since contentContainers is an array of all refs with the same name, we use activeTab to select the right one
+    //       const currentContainer = contentContainers[this.tab];
+    //       if (currentContainer) {
+    //         currentContainer.scrollTop = 0; // Scroll the content to the top
+    //       }
+          
+    //     }
+    //   });
+    // },
   },
   watch: {
         // whenever question changes, this function will run
@@ -731,5 +995,9 @@ export default {
     flex: 0 0 calc(50% - 10px); /* take up 50% of the container width minus some margin */
     height: 50px;
     margin-bottom: 10px; /* add some spacing between rows */
+  }
+
+  .custom-tabs .v-tab--active {
+    background-color: cyan !important;
   }
 </style>

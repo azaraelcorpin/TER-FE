@@ -83,6 +83,9 @@
 
          </div>            
      </v-list>
+     <div style="position: absolute;right: 0;bottom: 0;padding: 2px;font-size: x-small;">
+      {{version}}
+    </div>
    </v-navigation-drawer>
   
  <v-main>
@@ -159,6 +162,7 @@ export default {
    drawer:true,
    ConstRoutes,
    dialog:true,
+   version: process.env.VUE_APP_NAME_VERSION
  }),
  mounted(){
    //this.startInterval()
