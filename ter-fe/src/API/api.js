@@ -40,7 +40,7 @@ export default{
     var url = `${process.env.VUE_APP_TER_API_URL}/checkAccount`
     var auth = {
       userEmail:userEmail,
-      department:'cetd'
+      department:'DMED'
     }
     const config = await this.getAuthorization(auth);
     const body = { }

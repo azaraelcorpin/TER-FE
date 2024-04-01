@@ -4,7 +4,7 @@
             <v-card>
               <div class="Hcontainer">
                 <div class="item"><strong>Student's TER ID:</strong>&nbsp;{{$cookies.get('_SID_').id}}</div>
-                <div class="item"><strong>Section:</strong>&nbsp;{{$cookies.get('_SID_').section}}</div>
+                <div class="item"><strong>Semester:</strong>&nbsp;{{$cookies.get('_SID_').sem}}</div>
                 <div class="item"><strong>Name:</strong>&nbsp;{{$cookies.get('_SID_').userName}}</div>                
                 <div class="item"><strong>Year Level:</strong>&nbsp;{{$cookies.get('_SID_').yearlevel}}</div>
               </div>
@@ -14,6 +14,7 @@
             </v-card-title>
             <v-card-text>
               <v-data-table
+              :disable-sort="true"
                 :headers="headers"
                 :items="items" 
                 class="elevation-1"
@@ -22,6 +23,47 @@
                 :loading="table_loading"
                 loading-text="Loading... Please wait"
               >
+              <template v-slot:[`item.faculty_id`]="{ item }">
+                <tr >
+                  <td>
+                    {{item.faculty_id}}
+                  </td>
+                  <td>
+                    <div v-if="Boolean(item.fullname)">
+                      <v-icon v-if="Boolean(!item.validated)"
+                        medium
+                        color="green"
+                        @click="evaluate(item)"
+                      >
+                        mdi-pencil
+                      </v-icon>
+                      <v-tooltip bottom v-else>
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-icon 
+                        medium
+                        color="gray"
+                        v-bind="attrs"
+                            v-on="on"
+                      >
+                      mdi-checkbox-marked-circle
+                      </v-icon>
+                        </template>
+                        <span>Evaluated</span>
+                      </v-tooltip>
+                    </div>
+                  </td>
+                </tr>
+                <div v-if="item.child">
+                  <tr v-for="(child_item, child_index) in item.child" :key="child_index">
+                    <td>
+                      {{child_item.faculty_id}}
+                    </td>
+                    <td>
+                      test
+                      </td>
+                  </tr>
+                </div>
+              </template>
               <template v-slot:[`item.validated`]="{ item }">
                 <!-- <v-icon medium color="green" > mdi-magnify-plus </v-icon> -->
                 <div v-if="Boolean(item.fullname)">
@@ -77,11 +119,12 @@ import API from "@/API/api.js"
         items:[],
         headers: [
         { text: 'Subject Code', value: 'subjcode' },
-        // { text: 'Days', value: 'days' },
+        { text: 'Description', value: 'subjdesc' },
+        { text: 'Days', value: 'days' },
         { text: 'Section', value: 'section' },
-        { text: 'Day and Time', value: 'schedule' },
+        { text: 'Time', value: 'time' },
         { text: 'Faculty', value: 'fullname' },
-        { text: 'Room', value: 'room' },
+        { text: 'Test', value: 'faculty_id' },
         { text: 'Rate', value: 'validated',  },
       ],
       table_loading:true,
@@ -113,6 +156,7 @@ import API from "@/API/api.js"
                         })
                     } else {
                         this.items = response.COR 
+                        this.compileItems();
                         this.table_loading = false;                      
                     }
                 } catch (error) {
@@ -125,6 +169,27 @@ import API from "@/API/api.js"
         evaluate(item){
           localStorage.setItem('routeParams',JSON.stringify(item))
           this.$router.push({ name: 'terForm'})
+        },
+        compileItems(){
+          let tmp_items = [];
+          let tmp_ndx = 0;
+          //copy each item
+          for (let index = 0; index < this.items.length; index++) {
+            const element = this.items[index];
+            if( index > 0) {
+              if(element.subjcode === tmp_items[tmp_ndx-1].subjcode){
+                if(!tmp_items[tmp_ndx-1].child)
+                   tmp_items[tmp_ndx-1].child=[];
+                tmp_items[tmp_ndx-1].child.push(element);
+              }else{
+                tmp_items[tmp_ndx++] = element;
+              }
+            }else{
+              tmp_items[tmp_ndx++] = element;
+            }
+          }
+          console.log(JSON.stringify(tmp_items))
+          this.items = tmp_items;
         }
     }
   };

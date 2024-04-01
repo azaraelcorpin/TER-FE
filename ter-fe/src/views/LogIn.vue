@@ -97,7 +97,7 @@ export default {
       selectedRole: '',
       selectedStudent: '',
       selectedFaculty: '',
-      students: ['najiha.musa@msugensan.edu.ph', 'shairafatma.ismael@msugensan.edu.ph', 'salma.maningcara@msugensan.edu.ph','jasmine.limjap@msugensan.edu.ph'],
+      students: ['roseann.pa-alisbo@msugensan.edu.ph'],
       faculty: ['jinky.bibat@msugensan.edu.ph', 'jinky.bibat@msugensan.edu.ph', 'irene.bernadas@msugensan.edu.ph','daryl.valdez@msugensan.edu.ph'],
       resolve: null,
       version: process.env.VUE_APP_NAME_VERSION
