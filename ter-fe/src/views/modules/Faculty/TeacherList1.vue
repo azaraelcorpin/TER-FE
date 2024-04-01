@@ -215,7 +215,7 @@ methods: {
                       }
                       });
                       this.teachers1 = JSON.parse(JSON.stringify(response.FacultyList_P??[]))
-                      this.teachers.sort((a, b) => {
+                      this.teachers1.sort((a, b) => {
                       // Check if either a or b is validated
                       const aValidated = a.validated ? true : false;
                       const bValidated = b.validated ? true : false;
