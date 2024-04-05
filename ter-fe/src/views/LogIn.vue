@@ -1,10 +1,10 @@
 <template >
   <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; position: relative;" class="bg" >
-    <div style="text-shadow: -2px -2px 0 black, 2px -2px 0 black, -2px 2px 0 black, 2px 2px 0 black;justify-content: center; text-align: end; position: absolute; top: 20px; font-size: 48px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-weight: bold; color: #ffffff;">
+    <div style="text-shadow: -2px -2px 0 black, 2px -2px 0 black, -2px 2px 0 black, 2px 2px 0 black;justify-content: center; text-align: end; position: absolute; top: 20px; font-size: 48px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-weight: bold; color: #f7b82f;">
       Mindanao State University
     </div>
       <div  style="position: absolute;margin-bottom: 30%;  font-size: 20px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-weight: bold; color: black;">
-        Junior High School Department
+        COLLEGE OF MEDICINE
     </div>
     <div  style="position: absolute;margin-bottom: 15%;  font-size: 22px;text-decoration: underline; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-weight: bold; color:#137272;">
       TEACHING EFFICIENCY RATING
@@ -29,7 +29,7 @@
             <v-card-text>
               <v-radio-group v-model="selectedRole" inline>
                 <v-radio value="dean" label="Dean"></v-radio>
-                <v-radio value="director" label="As Director"></v-radio>
+                <v-radio value="chairperson" label="As Chairperson"></v-radio>
                 <v-radio value="faculty" label="As Faculty"></v-radio>
                 <v-radio value="student" label="As Student"></v-radio>
               </v-radio-group>
@@ -98,7 +98,7 @@ export default {
       selectedStudent: '',
       selectedFaculty: '',
       students: ['roseann.pa-alisbo@msugensan.edu.ph'],
-      faculty: ['jinky.bibat@msugensan.edu.ph', 'jinky.bibat@msugensan.edu.ph', 'irene.bernadas@msugensan.edu.ph','daryl.valdez@msugensan.edu.ph'],
+      faculty: ['ralphadriel.balan@msugensan.edu.ph','jean.alcover@msugensan.edu.ph','rizaldy.nolasco@msugensan.edu.ph','jerikohenry.aguirre@msugensan.edu.ph'],
       resolve: null,
       version: process.env.VUE_APP_NAME_VERSION
     }
@@ -185,8 +185,8 @@ export default {
         let userEmail=''
 
         
-          if(this.selectedRole === 'dean'){userEmail = 'mariatheresa.pelones@msugensan.edu.ph';}
-          else if(this.selectedRole === 'director'){ userEmail = 'renante.magoncia@msugensan.edu.ph';}
+          if(this.selectedRole === 'dean'){userEmail = 'edwin.alconcel@msugensan.edu.ph';}
+          else if(this.selectedRole === 'chairperson'){ userEmail = 'shilrose.saldivia@msugensan.edu.ph';}
           else if(this.selectedRole === 'faculty') {userEmail = this.selectedFaculty;}
           else if(this.selectedRole === 'student'){ userEmail = this.selectedStudent;}
 

@@ -1,6 +1,6 @@
 <template>
   <div class="v-application--wrap">
-   <v-app-bar color="#20bfd2" app>
+   <v-app-bar color="#f7b82f" app>
      <v-app-bar-nav-icon style="color:aliceblue" @click="drawer = !drawer"></v-app-bar-nav-icon>
      <div style="color:black;">Teaching Efficiency Rating Portal</div>
      <v-spacer />
@@ -21,7 +21,7 @@
    </v-app-bar>
    <v-navigation-drawer app
      v-model="drawer"
-     src="@/assets/bg.jpeg"
+     class="bg-drawer"
     
    >
      <v-list-item>
@@ -32,9 +32,9 @@
              > -->
          <!-- <v-list-item-title class="text-h4"> I-C-T-O </v-list-item-title>
          <v-list-item-subtitle> Powered By</v-list-item-subtitle> -->
-         <div class="logo-holder logo">
-           <h3>MSU GSC</h3>
-           <p>High School Department</p>
+         <div class="logo-holder logo" style="margin-bottom: 120px;">
+          <div style=" display: flex;justify-content: center;align-items: center;"> <h3>MSU</h3>
+           <p>College Of Medicine</p></div>
          </div>
        </v-list-item-content>
      </v-list-item>
@@ -228,6 +228,7 @@ export default {
  font-size: 50px;
  line-height:1.3;
  -webkit-text-stroke: 2px ;
+ margin-top: -25px;
 }
 .logo p {
  font-size: 12px;
@@ -237,5 +238,14 @@ export default {
  font-weight: 400;
  color: #fff;
  padding-left: 5px;
+ margin-top: -10px;
 }
+
+.bg-drawer {
+  background-image: url("@/assets/bg.jpeg");
+  background-repeat: no-repeat;
+  background-position: left top ; /* Adjust as needed */
+  background-size: auto 100%;
+}
+
 </style>

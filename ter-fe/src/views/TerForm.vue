@@ -5,9 +5,12 @@
     <v-card style="position: sticky;top: 0;z-index: 4;"> 
       <div class="Hcontainer">
         <div class="item"><strong>Faculty:</strong>&nbsp;{{ evaluateeInfo.fullname }}</div>
-        <div class="item"><strong>Subject:</strong>&nbsp;{{evaluateeInfo.subjcode??'N/A'}}</div>
-        <div class="item"><strong>Time/Day:</strong>&nbsp;{{evaluateeInfo.schedule??'N/A'}}</div>
-        <div class="item"><strong>Section:</strong>&nbsp;{{evaluateeInfo.section??'N/A'}}</div>
+        <div class="item" v-if="['P','H'].includes(this.$cookies.get('_SID_').eval_type??'X')"><strong>Groups:</strong>&nbsp;{{ evaluateeInfo.groups }}</div>
+        <div class="item" v-if="['S'].includes(this.$cookies.get('_SID_').eval_type??'X')"><strong>Section:</strong>&nbsp;{{evaluateeInfo.section??'N/A'}}</div>        
+        <div class="item" v-if="['S'].includes(this.$cookies.get('_SID_').eval_type??'X')"><strong>Time:</strong>&nbsp;{{evaluateeInfo.time??'N/A'}}</div>
+        <div class="item" v-if="['S'].includes(this.$cookies.get('_SID_').eval_type??'X')"><strong>Day:</strong>&nbsp;{{evaluateeInfo.days??'N/A'}}</div>
+        <div class="item" v-if="['S'].includes(this.$cookies.get('_SID_').eval_type??'X')"><strong>Description:</strong>&nbsp;{{evaluateeInfo.subjdesc??'N/A'}}</div>
+        <div class="item" v-if="['S'].includes(this.$cookies.get('_SID_').eval_type??'X')"><strong>Subject:</strong>&nbsp;{{evaluateeInfo.subjcode??'N/A'}}</div>
       </div>
       <i><strong>Direction:</strong> Please answer all question carefully. Choose the approriate number which corresponds to your honest evaluation.<br>
       Where 10 is the highest.</i>
@@ -799,7 +802,7 @@ export default {
         let _user = Vue.$cookies.get('_SID_');
         let _evaluatee = this.evaluateeInfo;
         let _eval = {
-                    "facultyId": _evaluatee.facultyid,
+                    "facultyId": _evaluatee.faculty_id,
                     "subjcode":  _evaluatee.subjcode?.trim(),
                     "section": _evaluatee.section?.trim(),
                     "evalType": this.evaluateeInfo.evalType??_user.eval_type,

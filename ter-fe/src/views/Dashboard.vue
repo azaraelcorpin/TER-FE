@@ -1,6 +1,6 @@
 <template>
   <div>
-    <ChartVue v-if="['P'].includes(this.$cookies.get('_SID_').eval_type??'X')"></ChartVue>
+    <ChartVue v-if="['P','H'].includes(this.$cookies.get('_SID_').eval_type??'X')"></ChartVue>
   <!-- <teacher-list v-if="['P','H'].includes(this.$cookies.get('_SID_').eval_type??'X')"/> -->
   <TeacherList1 v-if="['P','H'].includes(this.$cookies.get('_SID_').eval_type??'X')"/>
   <COR v-if="['S'].includes(this.$cookies.get('_SID_').eval_type??'X')"/>

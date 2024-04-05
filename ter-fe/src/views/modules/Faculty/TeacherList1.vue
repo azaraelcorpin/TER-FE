@@ -4,7 +4,7 @@
       <v-col cols="12"  >
         <v-card>
           <v-card-title>
-            {{($cookies.get('_SID_').position === 'Dean')?'Director':('List of Faculty '+(($cookies.get('_SID_').position === 'Director')?' (Head)':''))}}
+            {{($cookies.get('_SID_').position === 'dean')?'Chairpersons (Head)':('List of Faculty '+(($cookies.get('_SID_').position === 'chairperson')?' (Head)':''))}}
           </v-card-title>
           <v-card-text v-if="!list_loading">
             <v-text-field
@@ -72,11 +72,11 @@
         </v-card>
       </v-col>
     </v-row>
-    <v-row justify="center" v-if="($cookies.get('_SID_').position === 'Director')">
+    <v-row justify="center" v-if="['chairperson','dean'].includes(this.$cookies.get('_SID_').position??'X')">
       <v-col cols="12"  >
         <v-card>
           <v-card-title>
-            {{($cookies.get('_SID_').position === 'Dean')?'Director':('List of Faculty '+(($cookies.get('_SID_').position === 'Director')?' (Peer)':''))}}
+            {{($cookies.get('_SID_').position === 'dean')?'List of Faculty (Peer)':('List of Faculty '+(($cookies.get('_SID_').position === 'chairperson')?' (Peer)':''))}}
           </v-card-title>
           <v-card-text v-if="!list_loading">
             <v-text-field
@@ -160,7 +160,8 @@ export default {
       list_loading:true,
       headers: [
       { text: 'Faculty Name', value: 'fullname' },
-      { text: 'Email Address', value: 'emailaddress' },
+      { text: 'Designation', value: 'designation' },
+      { text: 'Groups', value: 'groups' },
       { text: 'Rate', value: 'validated',  },
     ],
     search:'',
@@ -215,7 +216,7 @@ methods: {
                       }
                       });
                       this.teachers1 = JSON.parse(JSON.stringify(response.FacultyList_P??[]))
-                      this.teachers.sort((a, b) => {
+                      this.teachers1.sort((a, b) => {
                       // Check if either a or b is validated
                       const aValidated = a.validated ? true : false;
                       const bValidated = b.validated ? true : false;

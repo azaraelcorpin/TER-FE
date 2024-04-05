@@ -12,6 +12,7 @@
             <v-card-title>
               List of Enrolled Subjects
             </v-card-title>
+            <i style="font-size: small"><strong>Direction:</strong> Please click the <v-icon small color="#C78c06">mdi-star</v-icon> to rate.</i>
             <v-card-text>
               <v-data-table
               :disable-sort="true"
@@ -23,20 +24,24 @@
                 :loading="table_loading"
                 loading-text="Loading... Please wait"
               >
-              <template v-slot:[`item.faculty_id`]="{ item }">
+              <template v-slot:[`item.fullname`]="{ item }">
                 <tr >
                   <td>
-                    {{item.faculty_id}}
-                  </td>
-                  <td>
                     <div v-if="Boolean(item.fullname)">
-                      <v-icon v-if="Boolean(!item.validated)"
-                        medium
-                        color="green"
-                        @click="evaluate(item)"
-                      >
-                        mdi-pencil
-                      </v-icon>
+                      <v-tooltip bottom v-if="!Boolean(item.validated)">
+                            <template v-slot:activator="{ on, attrs }">
+                              <v-icon 
+                                medium
+                                color="#C78c06"
+                                @click="evaluate(item)"
+                                v-bind="attrs"
+                                v-on="on"
+                              >
+                                mdi-star
+                              </v-icon>
+                            </template>
+                              <span>Rate</span>
+                            </v-tooltip>
                       <v-tooltip bottom v-else>
                     <template v-slot:activator="{ on, attrs }">
                       <v-icon 
@@ -52,15 +57,46 @@
                       </v-tooltip>
                     </div>
                   </td>
+                  <td>
+                    {{item.fullname}}
+                  </td>
                 </tr>
                 <div v-if="item.child">
                   <tr v-for="(child_item, child_index) in item.child" :key="child_index">
                     <td>
-                      {{child_item.faculty_id}}
+                        <div v-if="Boolean(child_item.fullname)">
+                          <v-tooltip bottom v-if="!Boolean(child_item.validated)">
+                            <template v-slot:activator="{ on, attrs }">
+                              <v-icon 
+                                medium
+                                color="#C78c06"
+                                @click="evaluate(child_item)"
+                                v-bind="attrs"
+                                v-on="on"
+                              >
+                                mdi-star
+                              </v-icon>
+                            </template>
+                              <span>Rate</span>
+                            </v-tooltip>
+                          <v-tooltip bottom v-else>
+                        <template v-slot:activator="{ on, attrs }">
+                          <v-icon 
+                            medium
+                            color="gray"
+                            v-bind="attrs"
+                                v-on="on"
+                          >
+                          mdi-checkbox-marked-circle
+                          </v-icon>
+                            </template>
+                            <span>Evaluated</span>
+                          </v-tooltip>
+                        </div>
                     </td>
                     <td>
-                      test
-                      </td>
+                      {{child_item.fullname}}
+                    </td>
                   </tr>
                 </div>
               </template>
@@ -124,8 +160,8 @@ import API from "@/API/api.js"
         { text: 'Section', value: 'section' },
         { text: 'Time', value: 'time' },
         { text: 'Faculty', value: 'fullname' },
-        { text: 'Test', value: 'faculty_id' },
-        { text: 'Rate', value: 'validated',  },
+        // { text: 'Test', value: 'faculty_id' },
+        // { text: 'Rate', value: 'validated',  },
       ],
       table_loading:true,
       };
@@ -188,7 +224,6 @@ import API from "@/API/api.js"
               tmp_items[tmp_ndx++] = element;
             }
           }
-          console.log(JSON.stringify(tmp_items))
           this.items = tmp_items;
         }
     }
