@@ -42,6 +42,9 @@
             </v-card-actions>
           </v-card>
         </v-dialog>
+    <div style="position: absolute;right: 0;bottom: 0;padding: 2px;font-size: x-small;"> 
+      {{version}} 
+    </div>
   </div>
 </template>
 
