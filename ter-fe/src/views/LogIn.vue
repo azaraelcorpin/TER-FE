@@ -99,7 +99,8 @@ export default {
       selectedFaculty: '',
       students: ['princearjen.gabato@msugensan.edu.ph', 'juliannesimoun.bizmawi@msugensan.edu.ph', 'salma.maningcara@msugensan.edu.ph','jasmine.limjap@msugensan.edu.ph'],
       faculty: ['jessica.aban@msugensan.edu.ph', 'abdul.silongan@msugensan.edu.ph', 'irene.bernadas@msugensan.edu.ph','daryl.valdez@msugensan.edu.ph'],
-      resolve: null
+      resolve: null,
+      version: process.env.VUE_APP_NAME_VERSION
     }
   },  
 
