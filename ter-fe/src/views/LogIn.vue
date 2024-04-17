@@ -20,7 +20,7 @@
         </svg>
       </div> -->
     </div>
-    <v-btn @click=" dialog=true" class="mt-5" color="green">Test Here</v-btn>
+    <v-btn v-if="testMode" @click=" dialog=true" class="mt-5" color="green">Test Here</v-btn>
         <v-dialog v-model="dialog" persistent>
           <v-card>
             <v-card-title>
@@ -100,10 +100,20 @@ export default {
       students: ['roseann.pa-alisbo@msugensan.edu.ph'],
       faculty: ['ralphadriel.balan@msugensan.edu.ph','jean.alcover@msugensan.edu.ph','rizaldy.nolasco@msugensan.edu.ph','jerikohenry.aguirre@msugensan.edu.ph'],
       resolve: null,
-      version: process.env.VUE_APP_NAME_VERSION
+      version: process.env.VUE_APP_NAME_VERSION,
+      testMode:false
     }
   },  
-
+ async activated(){  
+    try{
+      let response = await API.checkTestMode();
+      console.log('res',response)
+      if(response != null)
+      this.testMode = true;
+    }catch(error){
+      console.log(error.message); 
+    }
+  },
   methods: {
     async handleClickGetAuth() {
       try {
@@ -251,7 +261,14 @@ export default {
     // },
   },
   async mounted(){
-
+    try{
+      let responsed = await API.checkTestMode();
+      console.log('res',responsed)
+      if(responsed != null)
+      this.testMode = true;
+    }catch(error){
+      console.log(error.message); 
+    }
   }
   
 }

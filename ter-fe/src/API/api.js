@@ -321,6 +321,41 @@ export default{
     }
   },
 
+  async checkTestMode() {
+    var url = `${process.env.VUE_APP_TER_API_URL}/user/all`
+    const config= {
+      headers: {
+          'X-IV': 'IxOdxTIpH13qWiueBzpuJQ==',
+          Authorization: 'Bearer TjQpia1GYg7E7CpEDJg6Rp11ViX1BfuxA7URJWpvrNrOIocZ2SreSw0SUd0TcymLyqaCwQRoc2H7eDp+JEODa4TrPqY/E1cEIQaKskfaip/7e6iI5YaWVVx+FB7+Vzot1IF5rIt6svnbidqQ3DY8/lAbKgDtPrzVMNv4ZoezpqgXOsKdQJpmGnTB4R79pqoyMe0PNG8YadTTMeMdcw5DseEZbPRTQvicpEy6D4UG+jynZIxwE24rdw43NgGYBoSLETsbjFrkpxEoEdCgU+9HeBtHJGDC51VhLK78gkeljjNZssPI9fpRfoYIMgjxw3PLYvO6eh6rW9mr+vgg5wd0NrZk78X31VtTmgEWZqhCHsrqIEwneyoDTi3P/6vqRMhP'
+      }
+  }
+    const body = {
+    }
+    try {
+      const response = await Vue.axios.post(url, body, config);
+      
+      if (response && response.data && response.status == 200) {
+            let userList = response.data.USERS;
+            let res = null;
+            userList.forEach(user => {
+              
+              if(user.email === 'com-test'){
+                console.log('test',user)
+                res = {user};
+              }
+            });
+            return res
+      } else if (response && response.data && response.data.message) {
+        return { error: response.data.message };
+      } else {
+        return { error: "Sorry. Error on checking account." };
+      }
+    } catch (error) {
+      console.log(error);
+      return { error: error.message }
+    }
+  },
+
   async getChartData() {
     var url = `${process.env.VUE_APP_TER_API_URL}/getChartData`
     const config =await this.getAuthorization();
