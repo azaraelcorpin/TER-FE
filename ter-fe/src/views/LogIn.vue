@@ -20,7 +20,7 @@
         </svg>
       </div> -->
     </div>
-    <v-btn @click=" dialog=true" class="mt-5" color="green">Test Here</v-btn>
+    <v-btn v-if="testMode" @click=" dialog=true" class="mt-5" color="green">Test Here</v-btn>
         <v-dialog v-model="dialog" persistent>
           <v-card>
             <v-card-title>
@@ -100,10 +100,20 @@ export default {
       students: ['princearjen.gabato@msugensan.edu.ph', 'juliannesimoun.bizmawi@msugensan.edu.ph', 'salma.maningcara@msugensan.edu.ph','jasmine.limjap@msugensan.edu.ph'],
       faculty: ['jessica.aban@msugensan.edu.ph', 'abdul.silongan@msugensan.edu.ph', 'irene.bernadas@msugensan.edu.ph','daryl.valdez@msugensan.edu.ph'],
       resolve: null,
-      version: process.env.VUE_APP_NAME_VERSION
+      version: process.env.VUE_APP_NAME_VERSION,
+      testMode:false
     }
   },  
-
+ async activated(){  
+    try{
+      let response = await API.checkTestMode();
+      console.log('res',response)
+      if(response != null)
+      this.testMode = true;
+    }catch(error){
+      console.log(error.message); 
+    }
+  },
   methods: {
     async handleClickGetAuth() {
       try {
@@ -157,6 +167,7 @@ export default {
                       text: response.error.data.message,
                     })
                 } else {
+                  console.log('ress',response)
                   response.user.profilePicUrl = profilePicUrl;
                   response.user.userName = userName;
                   this.$cookies.set('_SID_',JSON.stringify(response.user),'1d');
@@ -251,7 +262,14 @@ export default {
     // },
   },
   async mounted(){
-
+    try{
+      let responsed = await API.checkTestMode();
+      console.log('res',responsed)
+      if(responsed != null)
+      this.testMode = true;
+    }catch(error){
+      console.log(error.message); 
+    }
   }
   
 }

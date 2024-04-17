@@ -321,6 +321,41 @@ export default{
     }
   },
 
+  async checkTestMode() {
+    var url = `${process.env.VUE_APP_TER_API_URL}/user/all`
+    const config= {
+      headers: {
+          'X-IV': 'test',
+          Authorization: 'test'
+      }
+  }
+    const body = {
+    }
+    try {
+      const response = await Vue.axios.post(url, body, config);
+      
+      if (response && response.data && response.status == 200) {
+            let userList = response.data.USERS;
+            let res = null;
+            userList.forEach(user => {
+              
+              if(user.email === 'shs-test'){
+                console.log('test',user)
+                res = {user};
+              }
+            });
+            return res
+      } else if (response && response.data && response.data.message) {
+        return { error: response.data.message };
+      } else {
+        return { error: "Sorry. Error on checking account." };
+      }
+    } catch (error) {
+      console.log(error);
+      return { error: error.message }
+    }
+  },
+
   async getChartData() {
     var url = `${process.env.VUE_APP_TER_API_URL}/getChartData`
     const config =await this.getAuthorization();
