@@ -20,7 +20,7 @@
         </svg>
       </div> -->
     </div>
-    <v-btn v-if="testMode" @click=" dialog=true" class="mt-5" color="green">Test Here</v-btn>
+    <v-btn v-if="true" @click=" dialog=true" class="mt-5" color="green">Test Here</v-btn>
         <v-dialog v-model="dialog" persistent>
           <v-card>
             <v-card-title>
@@ -97,7 +97,7 @@ export default {
       selectedRole: '',
       selectedStudent: '',
       selectedFaculty: '',
-      students: ['roseann.pa-alisbo@msugensan.edu.ph'],
+      students: ['renielamarie.berzuela@msugensan.edu.ph','amalhanan.ali@msugensan.edu.ph','gisellefaye.balolong@msugensan.edu.ph','cherrierose.alave@msugensan.edu.ph','al-nair.bilao@msugensan.edu.ph','zarah.bantuas@msugensan.edu.ph'],
       faculty: ['ralphadriel.balan@msugensan.edu.ph','jean.alcover@msugensan.edu.ph','rizaldy.nolasco@msugensan.edu.ph','jerikohenry.aguirre@msugensan.edu.ph'],
       resolve: null,
       version: process.env.VUE_APP_NAME_VERSION,
