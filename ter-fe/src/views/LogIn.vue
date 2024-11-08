@@ -7,7 +7,7 @@
       Senior High School Department
     </div>
     <div  style="position: absolute;margin-bottom: 15%;  font-size: 22px;text-decoration: underline; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-weight: bold; color:#137272;">
-      TEACHING EFFICIENCY RATING
+      TEACHING EFFICIENCY RATING 
     </div>
     <br/>
     <div style="position: absolute;margin-bottom: -10%;">
@@ -97,7 +97,8 @@ export default {
       selectedRole: '',
       selectedStudent: '',
       selectedFaculty: '',
-      students: ['princearjen.gabato@msugensan.edu.ph', 'juliannesimoun.bizmawi@msugensan.edu.ph', 'salma.maningcara@msugensan.edu.ph','jasmine.limjap@msugensan.edu.ph'],
+      students: ['emmanuelisaac.borela@msugensan.edu.ph', 'mikejeff.digandang@msugensan.edu.ph', 'michaelakaye.dawatan@msugensan.edu.ph',
+      'samanthablaire.besana@msugensan.edu.ph','sheenakate.daggao@msugensan.edu.ph','marcjustine.daligdig@msugensan.edu.ph','jeriel.gonzaga@msugensan.edu.ph','markorikardo.pailago@msugensan.edu.ph'],
       faculty: ['jessica.aban@msugensan.edu.ph', 'abdul.silongan@msugensan.edu.ph', 'irene.bernadas@msugensan.edu.ph','daryl.valdez@msugensan.edu.ph'],
       resolve: null,
       version: process.env.VUE_APP_NAME_VERSION,
