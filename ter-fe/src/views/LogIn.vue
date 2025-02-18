@@ -20,7 +20,7 @@
         </svg>
       </div> -->
     </div>
-    <v-btn v-if="testMode" @click=" dialog=true" class="mt-5" color="green">Test Here</v-btn>
+    <v-btn v-if="true" @click=" dialog=true" class="mt-5" color="green">Test Here</v-btn>
         <v-dialog v-model="dialog" persistent>
           <v-card>
             <v-card-title>
@@ -197,8 +197,8 @@ export default {
         let userEmail=''
 
         
-          if(this.selectedRole === 'academic_head'){userEmail = 'margie.quimosing@msugensan.edu.ph';}
-          else if(this.selectedRole === 'director'){ userEmail = 'jean.bergante@msugensan.edu.ph';}
+          if(this.selectedRole === 'academic_head'){userEmail = 'jaydee.paid@msugensan.edu.ph';}
+          else if(this.selectedRole === 'director'){ userEmail = 'jorgelyn.rivera@msugensan.edu.ph';}
           else if(this.selectedRole === 'faculty') {userEmail = this.selectedFaculty;}
           else if(this.selectedRole === 'student'){ userEmail = this.selectedStudent;}
 
