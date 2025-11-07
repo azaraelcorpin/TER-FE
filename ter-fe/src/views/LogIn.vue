@@ -28,7 +28,7 @@
             </v-card-title>
             <v-card-text>
               <v-radio-group v-model="selectedRole" inline>
-                <v-radio value="academic_head" label="As academic_head"></v-radio>
+                <v-radio value="dean" label="As dean"></v-radio>
                 <v-radio value="director" label="As Director"></v-radio>
                 <v-radio value="faculty" label="As Faculty"></v-radio>
                 <v-radio value="student" label="As Student"></v-radio>
@@ -197,7 +197,7 @@ export default {
         let userEmail=''
 
         
-          if(this.selectedRole === 'academic_head'){userEmail = 'jaydee.paid@msugensan.edu.ph';}
+          if(this.selectedRole === 'dean'){userEmail = 'dianemae.ulanday@msugensan.edu.ph';}
           else if(this.selectedRole === 'director'){ userEmail = 'jorgelyn.rivera@msugensan.edu.ph';}
           else if(this.selectedRole === 'faculty') {userEmail = this.selectedFaculty;}
           else if(this.selectedRole === 'student'){ userEmail = this.selectedStudent;}

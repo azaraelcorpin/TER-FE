@@ -4,7 +4,7 @@
         <v-col cols="12"  >
           <v-card>
             <v-card-title>
-              {{('List of Faculty '+((['Academic Head','Director'].includes($cookies.get('_SID_').position))?' (As Head)':'(As Peer)'))}}
+              {{(($cookies.get('_SID_').position === 'Dean')?'Director':('List of Faculty '+((['Academic Head','Director'].includes($cookies.get('_SID_').position))?' (As Head)':'(As Peer)')))}}
             </v-card-title>
             <v-card-text v-if="!list_loading">
               <v-text-field

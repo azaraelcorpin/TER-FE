@@ -187,7 +187,8 @@ export default{
     var url = `${process.env.VUE_APP_TER_API_URL}/questionnaire/getItemsTypeAndSy`
     const config =await this.getAuthorization();
     const body = {
-      "eval_type":evalType??Vue.$cookies.get('_SID_').eval_type??"S"
+      "eval_type":evalType??Vue.$cookies.get('_SID_').eval_type??"S",
+      "position":Vue.$cookies.get('_SID_').position,
       }
     let response = null
     try {

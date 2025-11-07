@@ -5,9 +5,10 @@
     <v-card style="position: sticky;top: 0;z-index: 4;"> 
       <div class="Hcontainer">
         <div class="item"><strong>Faculty:</strong>&nbsp;{{ evaluateeInfo.fullname }}</div>
-        <div class="item"><strong>Subject:</strong>&nbsp;{{evaluateeInfo.subjcode??'N/A'}}</div>
-        <div class="item"><strong>Time/Day:</strong>&nbsp;{{evaluateeInfo.schedule??'N/A'}}</div>
-        <div class="item"><strong>Section:</strong>&nbsp;{{evaluateeInfo.section??'N/A'}}</div>
+        <div class="item" v-if="evaluateeInfo.designation"><strong>Designation:</strong>&nbsp;{{evaluateeInfo.designation}}</div>
+        <div class="item" v-if="!evaluateeInfo.designation"><strong>Subject:</strong>&nbsp;{{evaluateeInfo.subjcode??'N/A'}}</div>
+        <div class="item" v-if="!evaluateeInfo.designation"><strong>Time/Day:</strong>&nbsp;{{evaluateeInfo.schedule??'N/A'}}</div>
+        <div class="item" v-if="!evaluateeInfo.designation"><strong>Section:</strong>&nbsp;{{evaluateeInfo.section??'N/A'}}</div>
       </div>
       <i><strong>Direction:</strong> Please answer all question carefully. Choose the approriate number which corresponds to your honest evaluation.<br>
       Where 10 is the highest.</i>
