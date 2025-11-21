@@ -20,7 +20,7 @@
         </svg>
       </div> -->
     </div>
-    <v-btn v-if="true" @click=" dialog=true" class="mt-5" color="green">Test Here</v-btn>
+    <v-btn v-if="testMode" @click=" dialog=true" class="mt-5" color="green">Test Here</v-btn>
         <v-dialog v-model="dialog" persistent>
           <v-card>
             <v-card-title>
